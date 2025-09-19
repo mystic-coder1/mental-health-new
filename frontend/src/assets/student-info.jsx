@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 
 const StudentRegistrationPage = () => {
   const navigate = useNavigate();
@@ -705,6 +706,15 @@ const StudentRegistrationPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-6 px-4 sm:py-8 sm:px-6 lg:px-8 flex items-center justify-center">
       <div className="w-full max-w-4xl mx-auto">
+        {/* Back Button */}
+        <button 
+          onClick={() => window.history.back()}
+          className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-sm font-medium">Back</span>
+        </button>
+
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">

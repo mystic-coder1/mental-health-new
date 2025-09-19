@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
@@ -28,6 +28,15 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md mx-auto">
+        {/* Back Button */}
+        <button 
+          onClick={() => window.history.back()}
+          className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-sm font-medium">Back</span>
+        </button>
+
         {/* Welcome Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-semibold text-gray-800 mb-2">Welcome Back</h1>
