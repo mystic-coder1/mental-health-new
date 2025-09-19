@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, Video, Users, Smartphone, Menu, X, Shield, Clock, Star, ChevronRight, Play, MessageCircle, Calendar, Quote, Send, Bot, User as UserIcon } from 'lucide-react';
+import { Heart, Video, Users, Smartphone, Menu, X, Shield, Clock, Star, ChevronRight, Play, MessageCircle, Calendar, Quote, Send, Bot, User as UserIcon, Brain, Zap } from 'lucide-react';
 
 function App() {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ function App() {
     {
       id: 1,
       type: 'bot',
-      text: "👋 Hi there! I'm YR Buddy AI, your mental wellness companion. How can I help you today?",
+      text: "👋 Hi there! I'm Your Buddy AI, your mental wellness companion. How can I help you today?",
       timestamp: new Date()
     }
   ]);
@@ -30,8 +30,8 @@ function App() {
   // To enable AI chatbot functionality with real APIs, add your API keys to environment variables:
   // 1. Create a .env file in the frontend directory
   // 2. Add one or both of these lines to your .env file:
-  //    REACT_APP_GEMINI_API_KEY=your_gemini_api_key_here
-  //    REACT_APP_OPENAI_API_KEY=your_openai_api_key_here (optional fallback)
+  //    VITE_GEMINI_API_KEY=your_gemini_api_key_here
+  //    VITE_OPENAI_API_KEY=your_openai_api_key_here (optional fallback)
   // 3. Restart your development server
   // The chatbot will automatically use Gemini API when available, or fallback to local responses
 
@@ -41,10 +41,13 @@ function App() {
       setIsTyping(true);
       
       // Try Gemini API first (primary)
-      const geminiApiKey = process.env.REACT_APP_GEMINI_API_KEY;
+      const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      console.log('Gemini API Key available:', !!geminiApiKey);
+      console.log('User message:', message);
       
       if (geminiApiKey) {
         try {
+          console.log('Attempting Gemini API call...');
           const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiApiKey}`, {
             method: 'POST',
             headers: {
@@ -53,7 +56,7 @@ function App() {
             body: JSON.stringify({
               contents: [{
                 parts: [{
-                  text: `You are YR Buddy AI, a compassionate mental health support assistant for the Your Buddy platform. Provide empathetic, supportive responses focused on mental wellness. Keep responses conversational, warm, and under 200 words. Include relevant emojis to make responses more engaging. Always encourage professional help for serious concerns and prioritize user safety.
+                  text: `You are Your Buddy AI, a compassionate mental health support assistant for the Your Buddy platform. Provide empathetic, supportive responses focused on mental wellness. Keep responses conversational, warm, and under 200 words. Include relevant emojis to make responses more engaging. Always encourage professional help for serious concerns and prioritize user safety.
 
 User message: ${message}`
                 }]
@@ -87,14 +90,19 @@ User message: ${message}`
 
           if (response.ok) {
             const data = await response.json();
+            console.log('Gemini API response:', data);
             if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+              console.log('Gemini API response text:', data.candidates[0].content.parts[0].text);
               return data.candidates[0].content.parts[0].text;
             } else {
               console.log('Gemini API response format unexpected, trying OpenAI...');
+              console.log('Response data:', data);
               throw new Error('Gemini API response format unexpected');
             }
           } else {
-            console.log('Gemini API failed, trying OpenAI...');
+            console.log('Gemini API failed with status:', response.status);
+            const errorText = await response.text();
+            console.log('Gemini API error response:', errorText);
             throw new Error('Gemini API failed');
           }
         } catch (geminiError) {
@@ -104,7 +112,7 @@ User message: ${message}`
       }
 
       // Fallback to OpenAI API
-      const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY;
+      const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
       
       if (openaiApiKey) {
         try {
@@ -119,7 +127,7 @@ User message: ${message}`
               messages: [
                 {
                   role: 'system',
-                  content: 'You are YR Buddy AI, a compassionate mental health support assistant. Provide empathetic, supportive responses focused on mental wellness. Keep responses concise but caring. Always encourage professional help for serious concerns. Include practical coping strategies when appropriate.'
+                  content: 'You are Your Buddy AI, a compassionate mental health support assistant. Provide empathetic, supportive responses focused on mental wellness. Keep responses concise but caring. Always encourage professional help for serious concerns. Include practical coping strategies when appropriate.'
                 },
                 {
                   role: 'user',
@@ -162,7 +170,7 @@ User message: ${message}`
     
     // Greeting responses
     if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
-      return "Hello! 👋 I'm YR Buddy AI, your mental wellness companion. I'm here to listen and support you. What's on your mind today?";
+      return "Hello! 👋 I'm Your Buddy AI, your mental wellness companion. I'm here to listen and support you. What's on your mind today?";
     }
     
     // Anxiety responses
@@ -553,13 +561,13 @@ User message: ${message}`
             >
               <Heart className="w-6 h-6 text-white" />
             </div>
-            <h3 className="text-2xl font-bold" style={{ color: '#585182' }}>YR Buddy</h3>
+            <h3 className="text-2xl font-bold" style={{ color: '#585182' }}>Your Buddy</h3>
           </div>
           <p className="text-gray-600 mb-4">
             Your compassionate companion for mental wellness
           </p>
           <p className="text-sm text-gray-500">
-            © 2024 YR Buddy. All rights reserved. • Privacy Policy • Terms of Service
+            © 2024 Your Buddy. All rights reserved. • Privacy Policy • Terms of Service
           </p>
         </div>
       </footer>
@@ -571,16 +579,15 @@ User message: ${message}`
           <div className="mb-4 w-96 h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col">
             {/* Header */}
             <div 
-              className="p-4 text-white flex items-center justify-between flex-shrink-0"
-              style={{ backgroundColor: '#585182' }}
+              className="p-4 text-white flex items-center justify-between flex-shrink-0 bg-gradient-to-r from-purple-600 to-blue-600"
             >
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                  <Bot className="w-5 h-5" />
+                  <Brain className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="font-medium block">YR Buddy AI</span>
-                  <span className="text-xs text-purple-200">Mental Wellness Assistant</span>
+                  <span className="font-medium block">AI Assistant</span>
+                  <span className="text-xs text-purple-200">Your Mental Wellness AI</span>
                 </div>
               </div>
               <button 
@@ -600,8 +607,8 @@ User message: ${message}`
                 >
                   <div className="flex items-start space-x-2 max-w-[80%]">
                     {message.type === 'bot' && (
-                      <div className="w-6 h-6 rounded-full flex items-center justify-center bg-purple-100 flex-shrink-0">
-                        <Bot className="w-4 h-4 text-purple-600" />
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-100 to-blue-100 flex-shrink-0">
+                        <Zap className="w-4 h-4 text-purple-600" />
                       </div>
                     )}
                     <div
@@ -631,14 +638,14 @@ User message: ${message}`
               {isTyping && (
                 <div className="flex justify-start">
                   <div className="flex items-start space-x-2">
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-purple-100">
-                      <Bot className="w-4 h-4 text-purple-600" />
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-100 to-blue-100">
+                      <Zap className="w-4 h-4 text-purple-600" />
                     </div>
                     <div className="bg-white p-3 rounded-lg rounded-bl-sm shadow-sm border">
                       <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                       </div>
                     </div>
                   </div>
@@ -702,20 +709,19 @@ User message: ${message}`
         {/* Chatbot Toggle Button */}
         <button
           onClick={toggleChatbot}
-          className="w-16 h-16 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 flex items-center justify-center"
-          style={{ backgroundColor: '#585182' }}
+          className="w-16 h-16 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 flex items-center justify-center bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
         >
           {isChatbotOpen ? (
             <X className="w-8 h-8 text-white" />
           ) : (
-            <MessageCircle className="w-8 h-8 text-white" />
+            <Brain className="w-8 h-8 text-white" />
           )}
         </button>
         
         {/* Floating notification dot */}
         {!isChatbotOpen && (
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-            <span className="text-xs text-white font-bold">1</span>
+          <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center animate-pulse">
+            <span className="text-xs text-white font-bold">AI</span>
           </div>
         )}
       </div>

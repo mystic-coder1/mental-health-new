@@ -929,7 +929,7 @@ const WellnessPage = () => {
                 <Heart className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">YR Buddy</h1>
+                <h1 className="text-xl font-bold text-gray-900">Your Buddy</h1>
                 <p className="text-xs text-gray-600">Mental Wellness Hub</p>
               </div>
             </div>
@@ -1140,7 +1140,7 @@ const WellnessPage = () => {
             >
               <Heart className="w-4 h-4 text-white" />
             </div>
-            <h4 className="text-lg font-bold text-gray-900">YR Buddy</h4>
+            <h4 className="text-lg font-bold text-gray-900">Your Buddy</h4>
           </div>
           <p className="text-gray-600 mb-4">Supporting mental health through gentle, therapeutic experiences</p>
           <p className="text-sm text-gray-500 mb-2">Remember: You are worthy of love, care, and healing. Take your time. 💙</p>
