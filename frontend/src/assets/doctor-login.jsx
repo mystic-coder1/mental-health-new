@@ -41,13 +41,13 @@ const DoctorLoginPage = () => {
   const handleSubmit = () => {
     if (isLogin) {
       console.log('Login attempt:', { email: formData.email, password: formData.password });
-      // Navigate to counsellor page on login
-      navigate('/counsellor');
+      // Navigate to doctor dashboard on login
+      navigate('/doc-dashboard');
     } else {
       console.log('Registration attempt:', formData);
-      // Show a success message for registration and navigate to counsellor page
-      alert('Application submitted successfully! You will be redirected to the counsellor page.');
-      navigate('/counsellor');
+      // Show a success message for registration and navigate to doctor dashboard
+      alert('Application submitted successfully! You will be redirected to the doctor dashboard.');
+      navigate('/doc-dashboard');
     }
   };
 
