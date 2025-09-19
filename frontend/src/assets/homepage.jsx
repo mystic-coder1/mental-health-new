@@ -724,5 +724,3 @@ User message: ${message}`
 }
 
 export default App;
-
-export default App;
