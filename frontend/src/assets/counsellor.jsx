@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, Star, Clock, DollarSign, User, Phone, Mail } from 'lucide-react';
+import { Search, Filter, Star, Clock, User, Phone, Mail } from 'lucide-react';
 
 const DoctorFinder = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -176,7 +176,7 @@ const DoctorFinder = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <DollarSign className="w-4 h-4 text-gray-500" />
+                    <span className="w-4 h-4 text-gray-500 text-sm font-semibold flex items-center justify-center">₹</span>
                     <div>
                       <p className="text-sm font-medium text-gray-900">₹{doctor.fees}</p>
                       <p className="text-xs text-gray-500">Per session</p>
