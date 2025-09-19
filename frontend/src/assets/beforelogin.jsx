@@ -1,7 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Heart, User, GraduationCap, Shield, Users, Sparkles } from 'lucide-react';
 
 function App() {
+  const navigate = useNavigate();
+
+  const handleDoctorLogin = () => {
+    navigate('/doctor-login');
+  };
+
+  const handleStudentLogin = () => {
+    navigate('/student-login');
+  };
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
@@ -40,6 +51,7 @@ function App() {
             {/* Doctor Option */}
             <div className="group">
               <button 
+                onClick={handleDoctorLogin}
                 className="w-full p-8 rounded-3xl border-2 border-gray-100 hover:border-purple-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white"
                 style={{ backgroundColor: 'white' }}
               >
@@ -71,6 +83,7 @@ function App() {
             {/* Student Option */}
             <div className="group">
               <button 
+                onClick={handleStudentLogin}
                 className="w-full p-8 rounded-3xl border-2 border-gray-100 hover:border-purple-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white"
                 style={{ backgroundColor: 'white' }}
               >
