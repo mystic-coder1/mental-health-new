@@ -12,6 +12,7 @@ import Category from './assets/category';
 import Homepage from './assets/homepage';
 import Counsellor from './assets/counsellor';
 import AR from './assets/arpage';
+import Video from './assets/videosession';
 import { Home } from 'lucide-react';
 
 
@@ -31,6 +32,7 @@ function App() {
       <Route path="/category" element={<Category />} />
       <Route path="/counsellor" element={<Counsellor />} />
       <Route path="/arpage" element={<AR />} />
+      <Route path="/video" element={<Video />} />
     
       <Route path="*" element={<Navigate to="/student-login" replace />} />
     </Routes>

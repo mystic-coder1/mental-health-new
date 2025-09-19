@@ -314,6 +314,7 @@ User message: ${message}`
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-2">
               <button 
+                onClick={() => navigate('/video')}
                 className="px-6 py-2 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
                 style={{ backgroundColor: '#585182' }}
               >
@@ -349,6 +350,7 @@ User message: ${message}`
             <div className="md:hidden mt-4 py-4 border-t border-gray-100">
               <div className="flex flex-col space-y-3">
                 <button 
+                  onClick={() => navigate('/video')}
                   className="w-full px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
                   style={{ backgroundColor: '#585182' }}
                 >
@@ -448,6 +450,7 @@ User message: ${message}`
                 Connect with licensed therapists through secure, private video consultations tailored to your needs.
               </p>
               <button 
+                onClick={() => navigate('/video')}
                 className="flex items-center text-lg font-medium hover:underline"
                 style={{ color: '#585182' }}
               >
@@ -579,7 +582,8 @@ User message: ${message}`
           <div className="mb-4 w-96 h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col">
             {/* Header */}
             <div 
-              className="p-4 text-white flex items-center justify-between flex-shrink-0 bg-gradient-to-r from-purple-600 to-blue-600"
+              className="p-4 text-white flex items-center justify-between flex-shrink-0"
+              style={{ backgroundColor: '#585182' }}
             >
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
@@ -587,7 +591,7 @@ User message: ${message}`
                 </div>
                 <div>
                   <span className="font-medium block">AI Assistant</span>
-                  <span className="text-xs text-purple-200">Your Mental Wellness AI</span>
+                  <span className="text-xs opacity-80">Your Mental Wellness AI</span>
                 </div>
               </div>
               <button 
@@ -607,26 +611,27 @@ User message: ${message}`
                 >
                   <div className="flex items-start space-x-2 max-w-[80%]">
                     {message.type === 'bot' && (
-                      <div className="w-6 h-6 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-100 to-blue-100 flex-shrink-0">
-                        <Zap className="w-4 h-4 text-purple-600" />
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#585182', opacity: 0.1 }}>
+                        <Zap className="w-4 h-4" style={{ color: '#585182' }} />
                       </div>
                     )}
                     <div
                       className={`p-3 rounded-lg text-sm ${
                         message.type === 'user'
-                          ? 'bg-purple-600 text-white rounded-br-sm'
+                          ? 'text-white rounded-br-sm'
                           : 'bg-white text-gray-800 rounded-bl-sm shadow-sm border'
                       }`}
+                      style={message.type === 'user' ? { backgroundColor: '#585182' } : {}}
                     >
                       <p className="whitespace-pre-wrap">{message.text}</p>
                       <span className={`text-xs mt-1 block ${
-                        message.type === 'user' ? 'text-purple-200' : 'text-gray-500'
+                        message.type === 'user' ? 'opacity-80' : 'text-gray-500'
                       }`}>
                         {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
                     {message.type === 'user' && (
-                      <div className="w-6 h-6 rounded-full flex items-center justify-center bg-purple-600 flex-shrink-0">
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#585182' }}>
                         <UserIcon className="w-4 h-4 text-white" />
                       </div>
                     )}
@@ -638,14 +643,14 @@ User message: ${message}`
               {isTyping && (
                 <div className="flex justify-start">
                   <div className="flex items-start space-x-2">
-                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-100 to-blue-100">
-                      <Zap className="w-4 h-4 text-purple-600" />
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#585182', opacity: 0.1 }}>
+                      <Zap className="w-4 h-4" style={{ color: '#585182' }} />
                     </div>
                     <div className="bg-white p-3 rounded-lg rounded-bl-sm shadow-sm border">
                       <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: '#585182' }}></div>
+                        <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: '#585182', animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: '#585182', animationDelay: '0.2s' }}></div>
                       </div>
                     </div>
                   </div>
@@ -659,19 +664,22 @@ User message: ${message}`
               <div className="grid grid-cols-2 gap-2 mb-3">
                 <button 
                   onClick={() => handleQuickAction('therapy')}
-                  className="text-xs p-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+                  className="text-xs p-2 rounded-lg hover:opacity-80 transition-colors text-white"
+                  style={{ backgroundColor: '#585182' }}
                 >
                   📅 Book Session
                 </button>
                 <button 
                   onClick={() => handleQuickAction('community')}
-                  className="text-xs p-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+                  className="text-xs p-2 rounded-lg hover:opacity-80 transition-colors text-white"
+                  style={{ backgroundColor: '#585182' }}
                 >
                   👥 Community
                 </button>
                 <button 
                   onClick={() => handleQuickAction('ar')}
-                  className="text-xs p-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+                  className="text-xs p-2 rounded-lg hover:opacity-80 transition-colors text-white"
+                  style={{ backgroundColor: '#585182' }}
                 >
                   🥽 AR Therapy
                 </button>
@@ -691,13 +699,15 @@ User message: ${message}`
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                   placeholder="Type your message..."
-                  className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                  className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 text-sm"
+                  style={{ 'focus:ring-color': '#585182' }}
                   disabled={isTyping}
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim() || isTyping}
-                  className="px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  className="px-3 py-2 text-white rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  style={{ backgroundColor: '#585182' }}
                 >
                   <Send className="w-4 h-4" />
                 </button>
@@ -709,7 +719,8 @@ User message: ${message}`
         {/* Chatbot Toggle Button */}
         <button
           onClick={toggleChatbot}
-          className="w-16 h-16 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 flex items-center justify-center bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+          className="w-16 h-16 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 flex items-center justify-center text-white hover:opacity-90"
+          style={{ backgroundColor: '#585182' }}
         >
           {isChatbotOpen ? (
             <X className="w-8 h-8 text-white" />
@@ -717,13 +728,6 @@ User message: ${message}`
             <Brain className="w-8 h-8 text-white" />
           )}
         </button>
-        
-        {/* Floating notification dot */}
-        {!isChatbotOpen && (
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center animate-pulse">
-            <span className="text-xs text-white font-bold">AI</span>
-          </div>
-        )}
       </div>
     </div>
   );
