@@ -1,6 +1,8 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
+
+import BeforeLog from './assets/beforelogin';
 import StudentLogin from './assets/studentlogin';
 import StudentInfo from './assets/student-info';
 import DoctorLogin from './assets/doctor-login';
@@ -14,7 +16,8 @@ import Category from './assets/category';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/student-login" replace />} />
+      {/* <Route path="/" element={<Navigate to="/" replace />} /> */}
+      <Route path="/" element={<BeforeLog />} />
       <Route path="/student-login" element={<StudentLogin />} />
       <Route path="/student-info" element={<StudentInfo />} />
       <Route path="/doctor-login" element={<DoctorLogin />} />
