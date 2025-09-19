@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, Star, Clock, User, Phone, Mail } from 'lucide-react';
+import { Search, Filter, Star, Clock, User, Phone, Mail, X, CheckCircle } from 'lucide-react';
 
 const DoctorFinder = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSpecialty, setSelectedSpecialty] = useState('');
+  const [showBookedPopup, setShowBookedPopup] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
 
   // Sample doctor data
   const doctors = [
@@ -91,6 +93,29 @@ const DoctorFinder = () => {
 
   const specialties = [...new Set(doctors.map(doc => doc.specialty))];
 
+  // Function to handle appointment booking
+  const handleBookAppointment = (doctor) => {
+    console.log('Booking appointment for:', doctor.name);
+    // Simulate checking if session is already booked (increased chance for demo)
+    const isAlreadyBooked = Math.random() > 0.3; // 70% chance of being already booked for demo
+    console.log('Is already booked:', isAlreadyBooked);
+    
+    if (isAlreadyBooked) {
+      console.log('Showing popup for:', doctor.name);
+      setSelectedDoctor(doctor);
+      setShowBookedPopup(true);
+    } else {
+      console.log('Navigating to booking page');
+      navigate('/book-appointment', { state: { doctor } });
+    }
+  };
+
+  // Function to handle redirection to meeting
+  const handleJoinMeeting = () => {
+    setShowBookedPopup(false);
+    navigate('/meet', { state: { doctor: selectedDoctor } });
+  };
+
   const filteredDoctors = doctors.filter(doctor => {
     const matchesSearch = doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          doctor.specialty.toLowerCase().includes(searchTerm.toLowerCase());
@@ -143,6 +168,19 @@ const DoctorFinder = () => {
           <p className="text-gray-600 mb-6">
             Showing {filteredDoctors.length} doctor{filteredDoctors.length !== 1 ? 's' : ''} available
           </p>
+          
+          {/* Test Button for Popup (Remove in production) */}
+          <div className="mb-6">
+            <button 
+              onClick={() => {
+                setSelectedDoctor(doctors[0]);
+                setShowBookedPopup(true);
+              }}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
+            >
+              Test Popup (Demo)
+            </button>
+          </div>
         </div>
       </div>
 
@@ -220,7 +258,7 @@ const DoctorFinder = () => {
               {/* Action Buttons */}
               <div className="p-6 pt-0 flex gap-3">
                 <button 
-                  onClick={() => navigate('/appointment-booking', { state: { doctor } })}
+                  onClick={() => handleBookAppointment(doctor)}
                   className="flex-1 py-2 px-4 rounded-lg font-medium text-white transition-colors duration-200 hover:opacity-90"
                   style={{ backgroundColor: '#585182' }}
                 >
@@ -247,6 +285,76 @@ const DoctorFinder = () => {
           </div>
         )}
       </div>
+
+      {/* Session Already Booked Popup */}
+      {showBookedPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full mx-4 shadow-2xl">
+            {/* Header */}
+            <div className="p-6 border-b border-gray-100">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#585182' }}>
+                    <CheckCircle className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">Session Already Booked!</h3>
+                </div>
+                <button 
+                  onClick={() => setShowBookedPopup(false)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            
+            {/* Content */}
+            <div className="p-6">
+              <div className="mb-4">
+                <p className="text-gray-600 mb-2">
+                  Great news! You already have a session booked with <strong>{selectedDoctor?.name}</strong>.
+                </p>
+                <p className="text-sm text-gray-500">
+                  Your appointment is scheduled for today. You can join the meeting now or book a new appointment for a different time.
+                </p>
+              </div>
+              
+              {/* Doctor Info */}
+              <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: '#585182' }}>
+                    <User className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900">{selectedDoctor?.name}</h4>
+                    <p className="text-sm text-gray-600">{selectedDoctor?.specialty}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Actions */}
+            <div className="p-6 pt-0 flex gap-3">
+              <button 
+                onClick={handleJoinMeeting}
+                className="flex-1 py-3 px-4 rounded-lg font-medium text-white transition-colors duration-200 hover:opacity-90"
+                style={{ backgroundColor: '#585182' }}
+              >
+                Join Meeting Now
+              </button>
+              <button 
+                onClick={() => {
+                  setShowBookedPopup(false);
+                  navigate('/book-appointment', { state: { doctor: selectedDoctor } });
+                }}
+                className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200"
+              >
+                Book New Session
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="bg-gray-50 border-t mt-16">

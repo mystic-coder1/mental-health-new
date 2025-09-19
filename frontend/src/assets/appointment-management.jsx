@@ -323,7 +323,10 @@ const AppointmentManagement = () => {
                         {appointment.status === 'confirmed' && (
                           <>
                             {appointment.type === 'video' && (
-                              <button className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg font-medium hover:bg-green-700 transition-colors">
+                              <button 
+                                onClick={() => navigate('/meet', { state: { appointment } })}
+                                className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg font-medium hover:bg-green-700 transition-colors"
+                              >
                                 <Video className="w-4 h-4 inline mr-2" />
                                 Join Video Call
                               </button>

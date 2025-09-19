@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Play, Pause, RotateCcw, Heart, Users, MessageSquare, BookOpen, Home, Sparkles, Circle, Sun, Cloud, Flower, Smile, ArrowLeft, Menu, X } from 'lucide-react';
 
 const WellnessPage = () => {
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState(null);
   const [breathingActive, setBreathingActive] = useState(false);
   const [breathPhase, setBreathPhase] = useState('inhale');
@@ -859,7 +861,8 @@ const WellnessPage = () => {
               </div>
               <p className="text-sm text-gray-600 mb-4">Specializes in depression, anxiety, and gentle healing approaches.</p>
               <button 
-                className="w-full text-white py-2 rounded-lg transition-colors"
+                onClick={() => navigate('/counsellor')}
+                className="w-full text-white py-2 rounded-lg transition-colors hover:opacity-90"
                 style={{ backgroundColor: '#585182' }}
               >
                 Book Session

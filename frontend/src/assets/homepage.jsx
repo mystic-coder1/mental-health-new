@@ -321,6 +321,7 @@ User message: ${message}`
                 Video Sessions
               </button>
               <button 
+                onClick={() => navigate('/community')}
                 className="px-6 py-2 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
                 style={{ backgroundColor: '#585182' }}
               >
@@ -357,6 +358,7 @@ User message: ${message}`
                   Video Sessions
                 </button>
                 <button 
+                  onClick={() => navigate('/community')}
                   className="w-full px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
                   style={{ backgroundColor: '#585182' }}
                 >
@@ -471,6 +473,7 @@ User message: ${message}`
                 Join supportive communities where you can share experiences and find encouragement from peers.
               </p>
               <button 
+                onClick={() => navigate('/community')}
                 className="flex items-center text-lg font-medium hover:underline"
                 style={{ color: '#585182' }}
               >

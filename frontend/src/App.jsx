@@ -13,6 +13,9 @@ import Homepage from './assets/homepage';
 import Counsellor from './assets/counsellor';
 import AR from './assets/arpage';
 import Video from './assets/videosession';
+import Appointmentbook from './assets/appointment-booking';
+import Meet from './assets/meet';
+import AppointmentManage from './assets/appointment-management';
 import { Home } from 'lucide-react';
 
 
@@ -33,6 +36,9 @@ function App() {
       <Route path="/counsellor" element={<Counsellor />} />
       <Route path="/arpage" element={<AR />} />
       <Route path="/video" element={<Video />} />
+      <Route path="/book-appointment" element={<Appointmentbook />} />
+      <Route path="/meet" element={<Meet />} />
+      <Route path="/manage-appoint" element={<AppointmentManage />} />
     
       <Route path="*" element={<Navigate to="/student-login" replace />} />
     </Routes>

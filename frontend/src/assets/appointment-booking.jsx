@@ -97,7 +97,7 @@ const AppointmentBooking = () => {
           </p>
           <div className="space-y-3">
             <button
-              onClick={() => navigate('/appointment-management')}
+              onClick={() => navigate('/manage-appoint')}
               className="w-full py-3 px-4 text-white rounded-lg font-medium transition-colors"
               style={{ backgroundColor: '#585182' }}
             >
