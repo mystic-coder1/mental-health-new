@@ -1,11 +1,280 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, Video, Users, Smartphone, Menu, X, Shield, Clock, Star, ChevronRight, Play, MessageCircle, Calendar, Quote } from 'lucide-react';
+import { Heart, Video, Users, Smartphone, Menu, X, Shield, Clock, Star, ChevronRight, Play, MessageCircle, Calendar, Quote, Send, Bot, User as UserIcon } from 'lucide-react';
 
 function App() {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      type: 'bot',
+      text: "👋 Hi there! I'm YR Buddy AI, your mental wellness companion. How can I help you today?",
+      timestamp: new Date()
+    }
+  ]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // API Configuration Instructions:
+  // To enable AI chatbot functionality with real APIs, add your API keys to environment variables:
+  // 1. Create a .env file in the frontend directory
+  // 2. Add one or both of these lines to your .env file:
+  //    REACT_APP_GEMINI_API_KEY=your_gemini_api_key_here
+  //    REACT_APP_OPENAI_API_KEY=your_openai_api_key_here (optional fallback)
+  // 3. Restart your development server
+  // The chatbot will automatically use Gemini API when available, or fallback to local responses
+
+  // Function to integrate with Gemini API
+  const sendToGeminiAPI = async (message) => {
+    try {
+      setIsTyping(true);
+      
+      // Try Gemini API first (primary)
+      const geminiApiKey = process.env.REACT_APP_GEMINI_API_KEY;
+      
+      if (geminiApiKey) {
+        try {
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiApiKey}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              contents: [{
+                parts: [{
+                  text: `You are YR Buddy AI, a compassionate mental health support assistant for the Your Buddy platform. Provide empathetic, supportive responses focused on mental wellness. Keep responses conversational, warm, and under 200 words. Include relevant emojis to make responses more engaging. Always encourage professional help for serious concerns and prioritize user safety.
+
+User message: ${message}`
+                }]
+              }],
+              generationConfig: {
+                temperature: 0.7,
+                topK: 40,
+                topP: 0.95,
+                maxOutputTokens: 300,
+              },
+              safetySettings: [
+                {
+                  category: "HARM_CATEGORY_HARASSMENT",
+                  threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                },
+                {
+                  category: "HARM_CATEGORY_HATE_SPEECH",
+                  threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                },
+                {
+                  category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                  threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                },
+                {
+                  category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                  threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                }
+              ]
+            })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+              return data.candidates[0].content.parts[0].text;
+            } else {
+              console.log('Gemini API response format unexpected, trying OpenAI...');
+              throw new Error('Gemini API response format unexpected');
+            }
+          } else {
+            console.log('Gemini API failed, trying OpenAI...');
+            throw new Error('Gemini API failed');
+          }
+        } catch (geminiError) {
+          console.log('Gemini API error:', geminiError.message);
+          // Fall through to OpenAI
+        }
+      }
+
+      // Fallback to OpenAI API
+      const openaiApiKey = process.env.REACT_APP_OPENAI_API_KEY;
+      
+      if (openaiApiKey) {
+        try {
+          const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${openaiApiKey}`,
+            },
+            body: JSON.stringify({
+              model: 'gpt-3.5-turbo',
+              messages: [
+                {
+                  role: 'system',
+                  content: 'You are YR Buddy AI, a compassionate mental health support assistant. Provide empathetic, supportive responses focused on mental wellness. Keep responses concise but caring. Always encourage professional help for serious concerns. Include practical coping strategies when appropriate.'
+                },
+                {
+                  role: 'user',
+                  content: message
+                }
+              ],
+              max_tokens: 300,
+              temperature: 0.7
+            })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            return data.choices[0].message.content || "I'm here to help! Could you please rephrase your question?";
+          } else {
+            console.log('OpenAI API failed, using local response');
+            throw new Error('OpenAI API failed');
+          }
+        } catch (openaiError) {
+          console.log('OpenAI API error:', openaiError.message);
+          // Fall through to local response
+        }
+      }
+
+      // If no API keys or both APIs failed, use local responses
+      console.log('Using local responses (no API keys configured or APIs failed)');
+      return getLocalResponse(message);
+      
+    } catch (error) {
+      console.error('API Error:', error);
+      return getLocalResponse(message);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  // Enhanced fallback local responses (for development/offline use)
+  const getLocalResponse = (message) => {
+    const lowerMessage = message.toLowerCase();
+    
+    // Greeting responses
+    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+      return "Hello! 👋 I'm YR Buddy AI, your mental wellness companion. I'm here to listen and support you. What's on your mind today?";
+    }
+    
+    // Anxiety responses
+    if (lowerMessage.includes('anxiety') || lowerMessage.includes('anxious') || lowerMessage.includes('nervous') || lowerMessage.includes('worry')) {
+      return "I understand you're feeling anxious. Anxiety is very common and manageable. Try this quick technique:\n\n🌬️ **4-7-8 Breathing**: Inhale for 4, hold for 7, exhale for 8\n\n💭 Remember: You're safe right now. Would you like me to guide you through some grounding exercises or help you book a session with a therapist?";
+    }
+    
+    // Depression responses
+    if (lowerMessage.includes('depression') || lowerMessage.includes('sad') || lowerMessage.includes('down') || lowerMessage.includes('depressed')) {
+      return "I'm sorry you're feeling this way. Depression is real and you're brave for reaching out. 💙\n\n✨ Small wins matter:\n• Take one deep breath\n• Drink some water\n• Step outside for a moment\n\nWould you like to speak with one of our licensed therapists? I can help you book a session.";
+    }
+    
+    // Stress responses
+    if (lowerMessage.includes('stress') || lowerMessage.includes('stressed') || lowerMessage.includes('overwhelmed')) {
+      return "Stress can feel overwhelming, but you're not alone. Let's try the **5-4-3-2-1 grounding technique**:\n\n👁️ 5 things you can see\n✋ 4 things you can touch\n👂 3 things you can hear\n👃 2 things you can smell\n👅 1 thing you can taste\n\nThis helps bring you back to the present moment. How are you feeling now?";
+    }
+    
+    // Sleep responses
+    if (lowerMessage.includes('sleep') || lowerMessage.includes('insomnia') || lowerMessage.includes('tired') || lowerMessage.includes('can\'t sleep')) {
+      return "Sleep is crucial for mental health. Here are some tips:\n\n🌙 **Sleep Hygiene**:\n• No screens 1 hour before bed\n• Keep room cool (65-68°F)\n• Try meditation or calming music\n• Consistent bedtime routine\n\nOur AR therapy has amazing sleep relaxation programs! Would you like to try them?";
+    }
+    
+    // Therapy/booking responses
+    if (lowerMessage.includes('book') || lowerMessage.includes('session') || lowerMessage.includes('therapy') || lowerMessage.includes('therapist') || lowerMessage.includes('counselor')) {
+      return "I'd be happy to help you book a therapy session! 📅\n\nOur licensed professionals offer:\n• Video consultations\n• Flexible scheduling\n• Specialized mental health support\n\nWould you like me to redirect you to our booking page to browse available therapists?";
+    }
+    
+    // Community responses
+    if (lowerMessage.includes('community') || lowerMessage.includes('forum') || lowerMessage.includes('support group') || lowerMessage.includes('connect')) {
+      return "Our community forums are a wonderful place to connect! 👥\n\n💫 Benefits:\n• Share experiences with peers\n• Get encouragement and support\n• Learn from others' journeys\n• Safe, moderated environment\n\nWould you like me to guide you to our community forums?";
+    }
+    
+    // AR Therapy responses
+    if (lowerMessage.includes('ar') || lowerMessage.includes('augmented reality') || lowerMessage.includes('vr') || lowerMessage.includes('virtual')) {
+      return "AR Therapy is an exciting way to practice mindfulness! 🥽✨\n\n🌟 **Features**:\n• Guided meditation environments\n• Anxiety management exercises\n• Breathing visualizations\n• Relaxing virtual spaces\n\nOur AR sessions help you practice coping strategies in immersive environments. Ready to try it?";
+    }
+    
+    // Crisis/Emergency responses
+    if (lowerMessage.includes('emergency') || lowerMessage.includes('crisis') || lowerMessage.includes('suicide') || lowerMessage.includes('self-harm') || lowerMessage.includes('hurt myself')) {
+      return "🚨 **IMMEDIATE HELP AVAILABLE**\n\nIf you're having thoughts of self-harm, please reach out right now:\n\n📞 **Crisis Resources**:\n• National Suicide Prevention Lifeline: **988**\n• Crisis Text Line: Text **HOME** to **741741**\n• Emergency Services: **911**\n\n💙 **You matter. Your life has value. Help is available 24/7.**\n\nPlease consider reaching out to someone you trust or emergency services immediately.";
+    }
+    
+    // Positive/thank you responses
+    if (lowerMessage.includes('thank') || lowerMessage.includes('thanks') || lowerMessage.includes('appreciate')) {
+      return "You're so welcome! 😊 It's my pleasure to support you on your mental wellness journey. Remember, taking care of your mental health is a sign of strength, not weakness. I'm here whenever you need to talk! 💙";
+    }
+    
+    // General mental health support
+    if (lowerMessage.includes('help') || lowerMessage.includes('support') || lowerMessage.includes('mental health')) {
+      return "I'm here to support your mental wellness journey! 🌟\n\n**I can help with**:\n• Coping strategies and techniques\n• Booking therapy sessions\n• Community forum guidance\n• AR therapy experiences\n• Crisis resources\n\nWhat specific area would you like support with today?";
+    }
+    
+    // Default empathetic response
+    return "Thank you for sharing that with me. 💙 I'm here to listen and support you. Every step toward better mental health matters, no matter how small.\n\nFeel free to ask me about:\n• Coping strategies\n• Booking therapy sessions\n• Community support\n• AR therapy experiences\n\nWhat would be most helpful for you right now?";
+  };
+
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim()) return;
+
+    const userMessage = {
+      id: messages.length + 1,
+      type: 'user',
+      text: inputMessage,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setInputMessage('');
+    
+    // Get response from Grok API
+    const botResponse = await sendToGeminiAPI(inputMessage);
+    
+    const botMessage = {
+      id: messages.length + 2,
+      type: 'bot',
+      text: botResponse,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, botMessage]);
+  };
+
+  const handleQuickAction = async (action) => {
+    const quickMessages = {
+      'therapy': "I'd like to book a therapy session",
+      'community': "Tell me about community forums",
+      'ar': "How does AR therapy work?",
+      'emergency': "I need emergency support"
+    };
+
+    if (quickMessages[action]) {
+      const userMessage = {
+        id: messages.length + 1,
+        type: 'user',
+        text: quickMessages[action],
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, userMessage]);
+      
+      const botResponse = await sendToGeminiAPI(quickMessages[action]);
+      
+      const botMessage = {
+        id: messages.length + 2,
+        type: 'bot',
+        text: botResponse,
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, botMessage]);
+    }
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -84,6 +353,7 @@ function App() {
                   Community Forums
                 </button>
                 <button 
+                  onClick={() => navigate('/arpage')}
                   className="w-full px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
                   style={{ backgroundColor: '#585182' }}
                 >
@@ -210,6 +480,7 @@ function App() {
                 Immersive augmented reality sessions designed to help you practice mindfulness and manage anxiety.
               </p>
               <button 
+                onClick={() => navigate('/arpage')}
                 className="flex items-center text-lg font-medium hover:underline"
                 style={{ color: '#585182' }}
               >
@@ -297,16 +568,20 @@ function App() {
       <div className="fixed bottom-6 right-6 z-50">
         {/* Chatbot Window */}
         {isChatbotOpen && (
-          <div className="mb-4 w-80 h-96 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+          <div className="mb-4 w-96 h-[500px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden flex flex-col">
+            {/* Header */}
             <div 
-              className="p-4 text-white flex items-center justify-between"
+              className="p-4 text-white flex items-center justify-between flex-shrink-0"
               style={{ backgroundColor: '#585182' }}
             >
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                  <MessageCircle className="w-5 h-5" />
+                  <Bot className="w-5 h-5" />
                 </div>
-                <span className="font-medium">YR Buddy Assistant</span>
+                <div>
+                  <span className="font-medium block">YR Buddy AI</span>
+                  <span className="text-xs text-purple-200">Mental Wellness Assistant</span>
+                </div>
               </div>
               <button 
                 onClick={toggleChatbot}
@@ -315,24 +590,109 @@ function App() {
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-6 h-full bg-gray-50">
-              <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
-                <p className="text-gray-700 text-sm">
-                  👋 Hi there! I'm here to help you with your mental wellness journey. How can I assist you today?
-                </p>
+            
+            {/* Messages Container */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div className="flex items-start space-x-2 max-w-[80%]">
+                    {message.type === 'bot' && (
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center bg-purple-100 flex-shrink-0">
+                        <Bot className="w-4 h-4 text-purple-600" />
+                      </div>
+                    )}
+                    <div
+                      className={`p-3 rounded-lg text-sm ${
+                        message.type === 'user'
+                          ? 'bg-purple-600 text-white rounded-br-sm'
+                          : 'bg-white text-gray-800 rounded-bl-sm shadow-sm border'
+                      }`}
+                    >
+                      <p className="whitespace-pre-wrap">{message.text}</p>
+                      <span className={`text-xs mt-1 block ${
+                        message.type === 'user' ? 'text-purple-200' : 'text-gray-500'
+                      }`}>
+                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                    {message.type === 'user' && (
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center bg-purple-600 flex-shrink-0">
+                        <UserIcon className="w-4 h-4 text-white" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+              
+              {/* Typing Indicator */}
+              {isTyping && (
+                <div className="flex justify-start">
+                  <div className="flex items-start space-x-2">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-purple-100">
+                      <Bot className="w-4 h-4 text-purple-600" />
+                    </div>
+                    <div className="bg-white p-3 rounded-lg rounded-bl-sm shadow-sm border">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+            
+            {/* Quick Actions */}
+            <div className="p-3 bg-white border-t border-gray-100">
+              <div className="grid grid-cols-2 gap-2 mb-3">
+                <button 
+                  onClick={() => handleQuickAction('therapy')}
+                  className="text-xs p-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+                >
+                  📅 Book Session
+                </button>
+                <button 
+                  onClick={() => handleQuickAction('community')}
+                  className="text-xs p-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+                >
+                  👥 Community
+                </button>
+                <button 
+                  onClick={() => handleQuickAction('ar')}
+                  className="text-xs p-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors"
+                >
+                  🥽 AR Therapy
+                </button>
+                <button 
+                  onClick={() => handleQuickAction('emergency')}
+                  className="text-xs p-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors"
+                >
+                  🚨 Emergency
+                </button>
               </div>
-              <div className="space-y-2">
-                <button className="w-full text-left p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors text-sm text-gray-700">
-                  Book a therapy session
-                </button>
-                <button className="w-full text-left p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors text-sm text-gray-700">
-                  Join community forums
-                </button>
-                <button className="w-full text-left p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors text-sm text-gray-700">
-                  Try AR therapy
-                </button>
-                <button className="w-full text-left p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors text-sm text-gray-700">
-                  Emergency support
+              
+              {/* Message Input */}
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  placeholder="Type your message..."
+                  className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                  disabled={isTyping}
+                />
+                <button
+                  onClick={handleSendMessage}
+                  disabled={!inputMessage.trim() || isTyping}
+                  className="px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <Send className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -362,5 +722,7 @@ function App() {
     </div>
   );
 }
+
+export default App;
 
 export default App;
