@@ -11,7 +11,7 @@ function App() {
             <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-full flex items-center justify-center">
               <Heart className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-800">YR Buddy</h1>
+            <h1 className="text-3xl font-bold text-gray-800">Your Buddy</h1>
           </div>
           <p className="text-center text-gray-600 mt-3 text-lg">
             Your compassionate companion for mental wellness
