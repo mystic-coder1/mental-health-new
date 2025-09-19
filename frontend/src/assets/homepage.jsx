@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Heart, Video, Users, Smartphone, Menu, X, Shield, Clock, Star, ChevronRight, Play, MessageCircle, Calendar, Quote } from 'lucide-react';
 
 function App() {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
@@ -15,6 +16,16 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* Back Button */}
+      <div className="absolute top-6 left-6 z-50">
+        <button
+          onClick={() => window.history.back()}
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md hover:shadow-lg transition-all duration-200 hover:bg-gray-50 border border-gray-200"
+        >
+          <ArrowLeft className="w-5 h-5 text-gray-600" />
+        </button>
+      </div>
+      
       {/* Navigation Bar */}
       <nav className="w-full px-6 py-4 shadow-sm sticky top-0 bg-white z-50">
         <div className="max-w-7xl mx-auto">
@@ -28,7 +39,7 @@ function App() {
                 <Heart className="w-6 h-6 text-white" />
               </div>
               <h1 className="text-2xl font-bold" style={{ color: '#585182' }}>
-                YR Buddy
+                Your Buddy
               </h1>
             </div>
 
@@ -118,7 +129,7 @@ function App() {
                 "Your mental health is a priority. Your happiness is essential. Your self-care is a necessity."
               </p>
               <div className="text-right">
-                <span className="text-sm text-purple-600 font-medium">— YR Buddy Community</span>
+                <span className="text-sm text-purple-600 font-medium">— Your Buddy Community</span>
               </div>
             </div>
           </div>
@@ -130,6 +141,7 @@ function App() {
           {/* CTA Button */}
           <div className="flex justify-center">
             <button 
+              onClick={() => navigate('/counsellor')}
               className="flex items-center px-8 py-4 rounded-full text-white font-semibold text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1 space-x-3"
               style={{ backgroundColor: '#585182' }}
             >

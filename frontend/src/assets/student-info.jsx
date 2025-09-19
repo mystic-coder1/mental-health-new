@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 
 const StudentRegistrationPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     // Personal Information
     firstName: '',
@@ -148,7 +150,13 @@ const StudentRegistrationPage = () => {
     if (validateStep(5)) {
       console.log('Registration data:', formData);
       alert('Account created successfully! Please check your email for verification.');
+      // Navigate to category page after successful registration
+      setTimeout(() => {
+        navigate('/category');
+      }, 1000); // Small delay to let the alert be seen
+      return true;
     }
+    return false;
   };
 
   const steps = [
@@ -698,6 +706,15 @@ const StudentRegistrationPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-6 px-4 sm:py-8 sm:px-6 lg:px-8 flex items-center justify-center">
       <div className="w-full max-w-4xl mx-auto">
+        {/* Back Button */}
+        <button 
+          onClick={() => window.history.back()}
+          className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 mb-6 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-sm font-medium">Back</span>
+        </button>
+
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
@@ -781,9 +798,7 @@ const StudentRegistrationPage = () => {
                   to="/category"
                   onClick={(e) => {
                     e.preventDefault();
-                    if (handleSubmit()) {
-                      window.location.href = '/category';
-                    }
+                    handleSubmit();
                   }}
                   style={{ backgroundColor: '#585182' }}
                   className="px-6 py-2 text-white rounded-md text-sm sm:text-base font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all inline-block text-center"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bell, Calendar, Users, FileText, MessageSquare, Check, X, Eye, Clock, AlertTriangle } from 'lucide-react';
+import { Bell, Calendar, Users, FileText, MessageSquare, Check, X, Eye, Clock, AlertTriangle, ArrowLeft } from 'lucide-react';
 
 const DoctorDashboard = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -7,6 +7,14 @@ const DoctorDashboard = () => {
   const [activeSection, setActiveSection] = useState('patients');
   const [treatmentPlan, setTreatmentPlan] = useState('');
   const [notes, setNotes] = useState('');
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [sessionDate, setSessionDate] = useState('');
+  const [sessionTime, setSessionTime] = useState('');
+  const [sessionType, setSessionType] = useState('individual');
+  const [sessionDuration, setSessionDuration] = useState('60');
+  const [reportType, setReportType] = useState('progress');
+  const [reportNotes, setReportNotes] = useState('');
 
   // Sample consultant requests data
   const consultantRequests = [
@@ -171,6 +179,54 @@ const DoctorDashboard = () => {
     alert('Consultant request rejected.');
   };
 
+  const handleScheduleSession = () => {
+    setShowScheduleModal(true);
+  };
+
+  const handleConfirmSchedule = () => {
+    console.log('Scheduling session for:', selectedStudent.name);
+    console.log('Date:', sessionDate);
+    console.log('Time:', sessionTime);
+    console.log('Type:', sessionType);
+    console.log('Duration:', sessionDuration, 'minutes');
+    alert(`Session scheduled successfully for ${selectedStudent.name} on ${sessionDate} at ${sessionTime}`);
+    setShowScheduleModal(false);
+    setSessionDate('');
+    setSessionTime('');
+    setSessionType('individual');
+    setSessionDuration('60');
+  };
+
+  const handleGenerateReport = () => {
+    setShowReportModal(true);
+  };
+
+  const handleConfirmReport = () => {
+    console.log('Generating report for:', selectedStudent.name);
+    console.log('Report Type:', reportType);
+    console.log('Additional Notes:', reportNotes);
+    
+    // Simulate report generation
+    const reportData = {
+      studentName: selectedStudent.name,
+      reportType: reportType,
+      generatedDate: new Date().toLocaleDateString(),
+      condition: selectedStudent.condition,
+      symptoms: selectedStudent.symptoms,
+      riskLevel: selectedStudent.riskLevel,
+      background: selectedStudent.background,
+      additionalNotes: reportNotes
+    };
+    
+    // In a real application, this would generate and download a PDF
+    alert(`${reportType.charAt(0).toUpperCase() + reportType.slice(1)} report generated successfully for ${selectedStudent.name}`);
+    console.log('Report Data:', reportData);
+    
+    setShowReportModal(false);
+    setReportType('progress');
+    setReportNotes('');
+  };
+
   const getRiskColor = (riskLevel) => {
     switch (riskLevel) {
       case 'Critical': return 'bg-red-50 text-red-700 border-red-200';
@@ -201,6 +257,15 @@ const DoctorDashboard = () => {
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="px-4 sm:px-6 lg:px-8 py-4">
+          {/* Back Button */}
+          <button 
+            onClick={() => window.history.back()}
+            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 mb-4 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">Back</span>
+          </button>
+          
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Mental Health Dashboard</h1>
@@ -427,12 +492,14 @@ const DoctorDashboard = () => {
                       Save Treatment Plan
                     </button>
                     <button
+                      onClick={handleScheduleSession}
                       style={{ backgroundColor: '#585182' }}
                       className="px-6 py-2 text-white rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all"
                     >
                       Schedule Session
                     </button>
                     <button
+                      onClick={handleGenerateReport}
                       style={{ backgroundColor: '#585182' }}
                       className="px-6 py-2 text-white rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all"
                     >
@@ -535,6 +602,150 @@ const DoctorDashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Schedule Session Modal */}
+      {showScheduleModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold mb-4">Schedule Session</h3>
+            <p className="text-gray-600 mb-4">Patient: {selectedStudent?.name}</p>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                <input
+                  type="date"
+                  value={sessionDate}
+                  onChange={(e) => setSessionDate(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  min={new Date().toISOString().split('T')[0]}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                <input
+                  type="time"
+                  value={sessionTime}
+                  onChange={(e) => setSessionTime(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Session Type</label>
+                <select
+                  value={sessionType}
+                  onChange={(e) => setSessionType(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  <option value="individual">Individual Therapy</option>
+                  <option value="group">Group Therapy</option>
+                  <option value="family">Family Therapy</option>
+                  <option value="crisis">Crisis Intervention</option>
+                  <option value="follow-up">Follow-up Session</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>
+                <select
+                  value={sessionDuration}
+                  onChange={(e) => setSessionDuration(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  <option value="30">30 minutes</option>
+                  <option value="45">45 minutes</option>
+                  <option value="60">60 minutes</option>
+                  <option value="90">90 minutes</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={() => setShowScheduleModal(false)}
+                className="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmSchedule}
+                disabled={!sessionDate || !sessionTime}
+                style={{ backgroundColor: '#585182' }}
+                className="px-4 py-2 text-white rounded-md hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              >
+                Schedule Session
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Generate Report Modal */}
+      {showReportModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold mb-4">Generate Report</h3>
+            <p className="text-gray-600 mb-4">Patient: {selectedStudent?.name}</p>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Report Type</label>
+                <select
+                  value={reportType}
+                  onChange={(e) => setReportType(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  <option value="progress">Progress Report</option>
+                  <option value="assessment">Assessment Report</option>
+                  <option value="treatment">Treatment Plan Report</option>
+                  <option value="crisis">Crisis Intervention Report</option>
+                  <option value="referral">Referral Report</option>
+                  <option value="discharge">Discharge Summary</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
+                <textarea
+                  value={reportNotes}
+                  onChange={(e) => setReportNotes(e.target.value)}
+                  placeholder="Enter any additional observations, recommendations, or notes for the report..."
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent h-24 resize-none"
+                />
+              </div>
+              
+              <div className="bg-gray-50 p-3 rounded-md">
+                <h4 className="text-sm font-medium text-gray-700 mb-2">Report will include:</h4>
+                <ul className="text-xs text-gray-600 space-y-1">
+                  <li>• Patient demographics and condition</li>
+                  <li>• Current symptoms and risk assessment</li>
+                  <li>• Treatment history and background</li>
+                  <li>• Professional recommendations</li>
+                  <li>• Generated on: {new Date().toLocaleDateString()}</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={() => setShowReportModal(false)}
+                className="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmReport}
+                style={{ backgroundColor: '#585182' }}
+                className="px-4 py-2 text-white rounded-md hover:opacity-90 transition-all"
+              >
+                Generate Report
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

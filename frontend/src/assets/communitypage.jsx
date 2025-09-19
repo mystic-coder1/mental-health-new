@@ -88,6 +88,393 @@ const CommunityPage = () => {
     }
   ]);
 
+  // Mental Health Feed Content
+  const [mentalHealthFeed, setMentalHealthFeed] = useState([
+    {
+      id: 'mh1',
+      type: 'daily_tip',
+      title: '💡 Daily Mental Health Tip',
+      content: 'Practice the 5-4-3-2-1 grounding technique: Name 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste. This helps reduce anxiety and brings you back to the present moment.',
+      author: 'Mental Health Guide',
+      timestamp: '6 hours ago',
+      likes: 89,
+      category: 'tip',
+      color: 'from-blue-50 to-cyan-50',
+      borderColor: 'border-blue-200',
+      icon: '🧠'
+    },
+    {
+      id: 'mh_new1',
+      type: 'trending',
+      title: '🔥 Trending: Study Break Ideas',
+      content: 'Top 5 study break activities that actually boost productivity:\n\n1. 10-minute walk outside\n2. Listen to 3 favorite songs\n3. Do 5 minutes of stretching\n4. Call a friend for 2 minutes\n5. Practice gratitude - list 3 good things\n\nWhich one will you try today?',
+      author: 'Study Wellness Tips',
+      timestamp: '2 hours ago',
+      likes: 342,
+      comments: 67,
+      retweets: 45,
+      category: 'trending',
+      color: 'from-red-50 to-orange-50',
+      borderColor: 'border-red-200',
+      icon: '🔥'
+    },
+    {
+      id: 'mh_new2',
+      type: 'student_post',
+      title: '📝 Student Thought',
+      content: 'Just realized that my anxiety about "not being productive enough" was actually making me LESS productive. Sometimes the pressure we put on ourselves is the real enemy. Taking breaks = not lazy. 🌱',
+      author: generateUniqueId('alex_student'),
+      authorType: 'student',
+      timestamp: '3 hours ago',
+      likes: 189,
+      comments: 34,
+      retweets: 23,
+      category: 'student_thought',
+      color: 'from-green-50 to-teal-50',
+      borderColor: 'border-green-200',
+      icon: '🌱'
+    },
+    {
+      id: 'mh2',
+      type: 'success_story',
+      title: '🌟 Student Success Story',
+      content: 'Just wanted to share that I finally overcame my test anxiety using the breathing techniques from our mindfulness sessions! I went from having panic attacks before exams to feeling calm and confident. Remember, small steps lead to big changes. You got this! 💪',
+      author: generateUniqueId('sarah_success'),
+      authorType: 'student',
+      timestamp: '4 hours ago',
+      likes: 256,
+      comments: 43,
+      retweets: 67,
+      category: 'success',
+      color: 'from-green-50 to-emerald-50',
+      borderColor: 'border-green-200',
+      icon: '🎉'
+    },
+    {
+      id: 'mh_new3',
+      type: 'meme',
+      title: '😂 Mental Health Meme',
+      content: 'Me: "I should really prioritize my mental health"\n\nAlso me at 3 AM: "Let me just overthink this one conversation from 2019 real quick"\n\n😅 Anyone else? Share your relatable moments below!',
+      author: 'Meme Mental Health',
+      timestamp: '5 hours ago',
+      likes: 445,
+      comments: 89,
+      retweets: 156,
+      category: 'humor',
+      color: 'from-yellow-50 to-amber-50',
+      borderColor: 'border-yellow-200',
+      icon: '😂'
+    },
+    {
+      id: 'mh_new4',
+      type: 'quick_tip',
+      title: '⚡ Quick Tip',
+      content: 'Feeling overwhelmed? Try the "2-minute rule": If a task takes less than 2 minutes, do it NOW. This prevents small tasks from piling up into mental clutter. Your future self will thank you! ✨',
+      author: generateUniqueId('productivity_guru'),
+      timestamp: '6 hours ago',
+      likes: 178,
+      comments: 21,
+      retweets: 34,
+      category: 'productivity',
+      color: 'from-purple-50 to-pink-50',
+      borderColor: 'border-purple-200',
+      icon: '⚡'
+    },
+    {
+      id: 'mh_new5',
+      type: 'live_session',
+      title: '🎥 Live Session Alert',
+      content: 'LIVE NOW: "Mindful Study Techniques" with Dr. Sarah Chen\n\n🕐 Started 30 minutes ago\n👥 47 students watching\n💬 Join the chat!\n\nTopics: Focus techniques, handling distractions, anxiety management during study sessions.',
+      author: 'Campus Wellness Center',
+      timestamp: '30 minutes ago',
+      likes: 67,
+      comments: 12,
+      category: 'live',
+      color: 'from-red-50 to-pink-50',
+      borderColor: 'border-red-300',
+      icon: '🔴',
+      isLive: true
+    },
+    {
+      id: 'mh3',
+      type: 'quote',
+      title: '💭 Mindful Moment',
+      content: '"You are not your thoughts. You are the awareness behind your thoughts." - Eckhart Tolle',
+      subtitle: 'Take a moment to breathe and remember that difficult thoughts and feelings are temporary. You have the strength to work through them.',
+      author: 'Daily Wisdom',
+      timestamp: '8 hours ago',
+      likes: 334,
+      comments: 45,
+      retweets: 78,
+      category: 'inspiration',
+      color: 'from-purple-50 to-violet-50',
+      borderColor: 'border-purple-200',
+      icon: '🌸'
+    },
+    {
+      id: 'mh_new6',
+      type: 'poll_active',
+      title: '📊 Quick Poll',
+      content: 'What helps you most when you\'re feeling stressed?',
+      author: 'Stress Management Hub',
+      timestamp: '10 hours ago',
+      likes: 123,
+      category: 'poll',
+      color: 'from-blue-50 to-indigo-50',
+      borderColor: 'border-blue-200',
+      icon: '📊',
+      pollOptions: [
+        { text: 'Deep breathing exercises 🌬️', votes: 89, percentage: 42 },
+        { text: 'Talking to friends 💬', votes: 56, percentage: 26 },
+        { text: 'Physical exercise 🏃‍♀️', votes: 43, percentage: 20 },
+        { text: 'Music/meditation 🎵', votes: 25, percentage: 12 }
+      ]
+    },
+    {
+      id: 'mh_new7',
+      type: 'thread',
+      title: '🧵 Thread: Exam Season Survival',
+      content: 'THREAD: How to survive exam season without losing your sanity 🧠\n\n1/7: First, remember that your worth isn\'t determined by your grades. You are more than your academic performance.\n\nReply to see the full thread! 👇',
+      author: 'Academic Wellness Coach',
+      timestamp: '12 hours ago',
+      likes: 267,
+      comments: 34,
+      retweets: 89,
+      category: 'thread',
+      color: 'from-teal-50 to-cyan-50',
+      borderColor: 'border-teal-200',
+      icon: '🧵'
+    },
+    {
+      id: 'mh4',
+      type: 'exercise',
+      title: '🧘‍♀️ Quick Stress Relief Exercise',
+      content: 'Box Breathing Technique:\n1. Inhale for 4 counts\n2. Hold for 4 counts\n3. Exhale for 4 counts\n4. Hold empty for 4 counts\n\nRepeat 4-6 times. Perfect for before exams or presentations!',
+      author: 'Wellness Coach',
+      timestamp: '14 hours ago',
+      likes: 187,
+      comments: 23,
+      retweets: 45,
+      category: 'exercise',
+      color: 'from-teal-50 to-cyan-50',
+      borderColor: 'border-teal-200',
+      icon: '🌬️',
+      actionButton: 'Try It Now'
+    },
+    {
+      id: 'mh_new8',
+      type: 'announcement',
+      title: '📢 New Feature: Mood Tracking',
+      content: 'Exciting news! We\'ve just launched our new mood tracking feature 🎉\n\n✨ Track daily emotions\n✨ Identify patterns\n✨ Get personalized insights\n✨ Share progress with counselors\n\nTry it now in your dashboard!',
+      author: 'Platform Updates',
+      timestamp: '16 hours ago',
+      likes: 298,
+      comments: 67,
+      category: 'announcement',
+      color: 'from-indigo-50 to-purple-50',
+      borderColor: 'border-indigo-200',
+      icon: '📢'
+    },
+    {
+      id: 'mh_new9',
+      type: 'personal_story',
+      title: '💝 Personal Share',
+      content: 'Two years ago, I couldn\'t leave my dorm room due to social anxiety. Today, I gave a presentation to 200+ people. Growth isn\'t linear, setbacks happen, but progress is possible. To anyone struggling: you\'re not alone, and you\'re stronger than you think. 💙',
+      author: generateUniqueId('brave_student'),
+      authorType: 'student',
+      timestamp: '18 hours ago',
+      likes: 543,
+      comments: 89,
+      retweets: 167,
+      category: 'personal_story',
+      color: 'from-pink-50 to-rose-50',
+      borderColor: 'border-pink-200',
+      icon: '💝'
+    },
+    {
+      id: 'mh_new10',
+      type: 'fact',
+      title: '🧠 Mental Health Fact',
+      content: 'Did you know? Regular exercise can be as effective as antidepressants for mild to moderate depression. Just 30 minutes of walking daily can boost mood, reduce stress, and improve sleep quality. 🚶‍♀️✨\n\nStart small - even 5 minutes counts!',
+      author: 'Mental Health Facts',
+      timestamp: '20 hours ago',
+      likes: 234,
+      comments: 34,
+      retweets: 67,
+      category: 'fact',
+      color: 'from-emerald-50 to-green-50',
+      borderColor: 'border-emerald-200',
+      icon: '🧠'
+    },
+    {
+      id: 'mh5',
+      type: 'article',
+      title: '📚 Understanding Imposter Syndrome',
+      content: 'Feeling like you don\'t belong in your academic program? You\'re not alone. Imposter syndrome affects 70% of students. Here are signs to watch for and strategies to overcome those feelings of self-doubt.',
+      author: 'Dr. Mental Health Expert',
+      timestamp: '22 hours ago',
+      likes: 398,
+      comments: 67,
+      retweets: 89,
+      category: 'education',
+      color: 'from-orange-50 to-amber-50',
+      borderColor: 'border-orange-200',
+      icon: '🎓',
+      readTime: '5 min read'
+    },
+    {
+      id: 'mh_new11',
+      type: 'challenge',
+      title: '🎯 Weekly Challenge',
+      content: 'This Week\'s Challenge: Digital Detox Hours 📱➡️📚\n\nGoal: 2 hours of phone-free time daily\nBenefits: Reduced anxiety, better sleep, improved focus\n\n💪 1,247 students participating\n🏆 Join the challenge!\n\n#DigitalDetox #MentalHealthChallenge',
+      author: 'Wellness Challenges',
+      timestamp: '1 day ago',
+      likes: 156,
+      comments: 43,
+      category: 'challenge',
+      color: 'from-violet-50 to-purple-50',
+      borderColor: 'border-violet-200',
+      icon: '🎯',
+      challengeProgress: 73,
+      participants: 1247
+    },
+    {
+      id: 'mh6',
+      type: 'poll',
+      title: '📊 Community Check-in',
+      content: 'How are you feeling about your mental health journey this week?',
+      author: 'Community Team',
+      timestamp: '1 day ago',
+      likes: 267,
+      comments: 78,
+      retweets: 34,
+      category: 'community',
+      color: 'from-pink-50 to-rose-50',
+      borderColor: 'border-pink-200',
+      icon: '💕',
+      pollOptions: [
+        { text: 'Making great progress! 😊', votes: 45, percentage: 35 },
+        { text: 'Having ups and downs 😐', votes: 62, percentage: 48 },
+        { text: 'Struggling but trying 😔', votes: 22, percentage: 17 }
+      ]
+    },
+    {
+      id: 'mh_new12',
+      type: 'video',
+      title: '🎬 Video: 5-Minute Meditation',
+      content: 'New video uploaded! 🎥\n\n"5-Minute Morning Meditation for Students"\n\n👀 2.3K views in 6 hours\n💬 "This helped me start my day feeling centered!"\n💬 "Perfect for my busy schedule"\n\nWatch now and start your day mindfully ✨',
+      author: 'Mindfulness Videos',
+      timestamp: '1 day ago',
+      likes: 189,
+      comments: 45,
+      retweets: 67,
+      category: 'video',
+      color: 'from-cyan-50 to-blue-50',
+      borderColor: 'border-cyan-200',
+      icon: '🎬',
+      videoViews: '2.3K'
+    },
+    {
+      id: 'mh7',
+      type: 'resource',
+      title: '🎯 Mental Health Resources',
+      content: 'Quick access to support when you need it most:',
+      author: 'Campus Resources',
+      timestamp: '2 days ago',
+      likes: 189,
+      comments: 23,
+      retweets: 45,
+      category: 'resources',
+      color: 'from-indigo-50 to-blue-50',
+      borderColor: 'border-indigo-200',
+      icon: '🆘',
+      resources: [
+        { name: 'Crisis Text Line', contact: 'Text HOME to 741741', type: 'crisis' },
+        { name: 'Campus Counseling', contact: 'Call (555) 123-4567', type: 'counseling' },
+        { name: 'Peer Support Group', contact: 'Join our Discord', type: 'peer' }
+      ]
+    },
+    {
+      id: 'mh_new13',
+      type: 'motivational',
+      title: '🌅 Monday Motivation',
+      content: 'New week, fresh mindset! 🌟\n\nThis week I will:\n✅ Be patient with my progress\n✅ Celebrate small wins\n✅ Ask for help when needed\n✅ Practice self-compassion\n✅ Remember that healing isn\'t linear\n\nWhat\'s your intention for this week? Share below! 👇',
+      author: 'Monday Motivations',
+      timestamp: '2 days ago',
+      likes: 445,
+      comments: 123,
+      retweets: 189,
+      category: 'motivational',
+      color: 'from-orange-50 to-yellow-50',
+      borderColor: 'border-orange-200',
+      icon: '🌅'
+    },
+    {
+      id: 'mh8',
+      type: 'reminder',
+      title: '⏰ Gentle Reminder',
+      content: 'It\'s okay to take breaks. It\'s okay to ask for help. It\'s okay to not be okay sometimes. Your mental health matters more than any assignment or deadline. Be kind to yourself today. 💙',
+      author: 'Self-Care Bot',
+      timestamp: '3 days ago',
+      likes: 521,
+      comments: 89,
+      retweets: 167,
+      category: 'self-care',
+      color: 'from-sky-50 to-blue-50',
+      borderColor: 'border-sky-200',
+      icon: '💙'
+    },
+    {
+      id: 'mh_new14',
+      type: 'research',
+      title: '📊 New Research',
+      content: 'Interesting study alert! 🔬\n\nNew research from Stanford shows that students who practice gratitude journaling for just 2 weeks experience:\n\n📈 23% improvement in sleep quality\n📈 15% reduction in stress levels\n📈 18% boost in academic motivation\n\nWho\'s ready to try it?',
+      author: 'Research Updates',
+      timestamp: '3 days ago',
+      likes: 234,
+      comments: 56,
+      retweets: 78,
+      category: 'research',
+      color: 'from-teal-50 to-emerald-50',
+      borderColor: 'border-teal-200',
+      icon: '📊'
+    },
+    {
+      id: 'mh9',
+      type: 'interactive',
+      title: '🎮 Mood Tracker Challenge',
+      content: 'Track your mood for 7 days and notice patterns! Understanding your emotional rhythms can help you plan better self-care strategies.',
+      author: 'Wellness Challenge',
+      timestamp: '4 days ago',
+      likes: 303,
+      comments: 67,
+      retweets: 89,
+      category: 'challenge',
+      color: 'from-yellow-50 to-orange-50',
+      borderColor: 'border-yellow-200',
+      icon: '📈',
+      challengeProgress: 65,
+      participants: 89
+    },
+    {
+      id: 'mh10',
+      type: 'community_question',
+      title: '🤝 Let\'s Connect',
+      content: 'What\'s one small thing that made you smile today? Share in the comments to spread some positivity! Sometimes the smallest moments can brighten someone else\'s day. ✨',
+      author: 'Community Manager',
+      timestamp: '5 days ago',
+      likes: 256,
+      comments: 145,
+      retweets: 67,
+      category: 'community',
+      color: 'from-emerald-50 to-teal-50',
+      borderColor: 'border-emerald-200',
+      icon: '✨'
+    }
+  ]);
+
+  const [likedMentalHealthPosts, setLikedMentalHealthPosts] = useState(new Set());
+
   const [mentors] = useState([
     {
       id: 1,
@@ -250,6 +637,90 @@ const CommunityPage = () => {
     setChatMessage('');
   };
 
+  // Mental Health Feed Handlers
+  const handleMentalHealthLike = (postId) => {
+    setLikedMentalHealthPosts(prev => {
+      const newLiked = new Set(prev);
+      if (newLiked.has(postId)) {
+        newLiked.delete(postId);
+        setMentalHealthFeed(prevFeed => prevFeed.map(post => 
+          post.id === postId ? { ...post, likes: post.likes - 1 } : post
+        ));
+      } else {
+        newLiked.add(postId);
+        setMentalHealthFeed(prevFeed => prevFeed.map(post => 
+          post.id === postId ? { ...post, likes: post.likes + 1 } : post
+        ));
+      }
+      return newLiked;
+    });
+  };
+
+  const handlePollVote = (postId, optionIndex) => {
+    setMentalHealthFeed(prevFeed => prevFeed.map(post => {
+      if (post.id === postId && post.pollOptions) {
+        const updatedOptions = post.pollOptions.map((option, index) => {
+          if (index === optionIndex) {
+            return { ...option, votes: option.votes + 1 };
+          }
+          return option;
+        });
+        
+        const totalVotes = updatedOptions.reduce((sum, option) => sum + option.votes, 0);
+        const updatedOptionsWithPercentage = updatedOptions.map(option => ({
+          ...option,
+          percentage: Math.round((option.votes / totalVotes) * 100)
+        }));
+        
+        return { ...post, pollOptions: updatedOptionsWithPercentage };
+      }
+      return post;
+    }));
+  };
+
+  const handleBreathingExercise = () => {
+    alert('🌬️ Let\'s practice together!\n\n1. Breathe in for 4 counts... 1... 2... 3... 4...\n2. Hold for 4 counts... 1... 2... 3... 4...\n3. Breathe out for 4 counts... 1... 2... 3... 4...\n4. Hold empty for 4 counts... 1... 2... 3... 4...\n\nGreat job! Repeat this cycle 4-6 times for maximum benefit. 💙');
+  };
+
+  // Twitter-style interaction handlers
+  const [retweetedPosts, setRetweetedPosts] = useState(new Set());
+  
+  const handleRetweet = (postId) => {
+    setRetweetedPosts(prev => {
+      const newRetweeted = new Set(prev);
+      if (newRetweeted.has(postId)) {
+        newRetweeted.delete(postId);
+        setMentalHealthFeed(prevFeed => prevFeed.map(post => 
+          post.id === postId ? { ...post, retweets: (post.retweets || 0) - 1 } : post
+        ));
+      } else {
+        newRetweeted.add(postId);
+        setMentalHealthFeed(prevFeed => prevFeed.map(post => 
+          post.id === postId ? { ...post, retweets: (post.retweets || 0) + 1 } : post
+        ));
+      }
+      return newRetweeted;
+    });
+  };
+
+  const handleLiveJoin = (postId) => {
+    alert('🎥 Joining live session...\n\nRedirecting to live stream in the Campus Wellness Center. You\'ll receive a notification when the session starts!');
+  };
+
+  const handleVideoPlay = (postId) => {
+    alert('🎬 Opening video player...\n\nThis would open the meditation video in a new window or modal. Video features:\n\n• 5-minute guided meditation\n• Closed captions available\n• Playback speed control\n• Save to favorites');
+  };
+
+  const handleJoinChallenge = (postId) => {
+    setMentalHealthFeed(prevFeed => prevFeed.map(post => {
+      if (post.id === postId && post.participants) {
+        return { ...post, participants: post.participants + 1 };
+      }
+      return post;
+    }));
+    alert('🎯 Challenge joined!\n\nYou\'ve successfully joined the Digital Detox Challenge. Check your dashboard for daily progress tracking and tips!');
+  };
+
   const toggleComments = (postId) => {
     setExpandedComments(prev => ({
       ...prev,
@@ -364,7 +835,7 @@ const CommunityPage = () => {
             <input 
               type="text" 
               value={chatMessage}
-              onChange={(e) => setChatMessage(e.target.value)}
+              onChange={(e) => setChatMessage(prevMessage => e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               placeholder="Type a message..."
               className="flex-1 bg-transparent outline-none"
@@ -547,7 +1018,7 @@ const CommunityPage = () => {
                 <div className="flex-1">
                   <textarea
                     value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
+                    onChange={(e) => setNewComment(prevComment => e.target.value)}
                     placeholder="Write a comment..."
                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#585182] resize-none"
                     rows="3"
@@ -625,6 +1096,17 @@ const CommunityPage = () => {
                   <Award className="w-4 h-4" />
                   <span>Mentors</span>
                 </button>
+                <button 
+                  onClick={() => setActiveTab('mental-health')}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    activeTab === 'mental-health' 
+                      ? 'bg-[#585182] bg-opacity-10 text-[#585182]' 
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <Heart className="w-4 h-4" />
+                  <span>Wellness Feed</span>
+                </button>
               </div>
             </div>
             
@@ -663,7 +1145,7 @@ const CommunityPage = () => {
                         type="text"
                         placeholder="Search discussions..."
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) => setSearchTerm(prevTerm => e.target.value)}
                         className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#585182]"
                       />
                     </div>
@@ -729,6 +1211,226 @@ const CommunityPage = () => {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+
+            {activeTab === 'mental-health' && (
+              <div className="space-y-6">
+                {/* Welcome Message */}
+                <div className="bg-gradient-to-r from-purple-50 via-blue-50 to-teal-50 border border-purple-200 rounded-lg p-6 mb-6">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                      <Heart className="w-6 h-6 text-white" />
+                    </div>
+                    <h2 className="text-xl font-bold text-gray-900">Welcome to your Wellness Feed</h2>
+                  </div>
+                  <p className="text-gray-700">Discover mental health tips, inspiring stories, and supportive resources curated just for you. Your wellbeing matters! 💙</p>
+                </div>
+
+                {/* Mental Health Feed Posts */}
+                {mentalHealthFeed.map(post => (
+                  <div key={post.id} className={`bg-gradient-to-br ${post.color} border ${post.borderColor} rounded-lg shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden`}>
+                    <div className="p-6">
+                      {/* Post Header */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="text-2xl">{post.icon}</div>
+                          <div>
+                            <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                              {post.title}
+                              {post.type === 'success_story' && <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Success</span>}
+                              {post.type === 'daily_tip' && <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Tip</span>}
+                              {post.type === 'exercise' && <span className="bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded-full">Exercise</span>}
+                              {post.type === 'trending' && <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Trending</span>}
+                              {post.type === 'live_session' && <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full animate-pulse">LIVE</span>}
+                              {post.type === 'poll_active' && <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Poll</span>}
+                              {post.type === 'thread' && <span className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Thread</span>}
+                              {post.type === 'meme' && <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Meme</span>}
+                              {post.type === 'video' && <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">Video</span>}
+                              {post.type === 'challenge' && <span className="bg-violet-100 text-violet-800 text-xs px-2 py-1 rounded-full">Challenge</span>}
+                            </h3>
+                            <p className="text-sm text-gray-600">{post.author} • {post.timestamp}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          {post.readTime && (
+                            <span className="bg-white bg-opacity-70 text-gray-700 text-xs px-2 py-1 rounded-full">
+                              {post.readTime}
+                            </span>
+                          )}
+                          {post.videoViews && (
+                            <span className="bg-white bg-opacity-70 text-gray-700 text-xs px-2 py-1 rounded-full">
+                              👁️ {post.videoViews}
+                            </span>
+                          )}
+                          {post.isLive && (
+                            <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full animate-pulse">
+                              🔴 LIVE
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Post Content */}
+                      <div className="mb-4">
+                        <p className="text-gray-800 leading-relaxed whitespace-pre-line">{post.content}</p>
+                        {post.subtitle && (
+                          <p className="text-gray-600 mt-2 italic">{post.subtitle}</p>
+                        )}
+                      </div>
+
+                      {/* Special Content Types */}
+                      {post.type === 'poll' && post.pollOptions && (
+                        <div className="mb-4 space-y-2">
+                          {post.pollOptions.map((option, index) => (
+                            <button
+                              key={index}
+                              onClick={() => handlePollVote(post.id, index)}
+                              className="w-full text-left p-3 rounded-lg border border-white bg-white bg-opacity-50 hover:bg-opacity-70 transition-all"
+                            >
+                              <div className="flex justify-between items-center">
+                                <span>{option.text}</span>
+                                <span className="font-semibold">{option.percentage}%</span>
+                              </div>
+                              <div className="mt-1 w-full bg-gray-200 rounded-full h-2">
+                                <div 
+                                  className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-500"
+                                  style={{ width: `${option.percentage}%` }}
+                                ></div>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+
+                      {post.type === 'resource' && post.resources && (
+                        <div className="mb-4 space-y-2">
+                          {post.resources.map((resource, index) => (
+                            <div key={index} className="bg-white bg-opacity-70 rounded-lg p-3 flex items-center justify-between">
+                              <div>
+                                <p className="font-medium text-gray-900">{resource.name}</p>
+                                <p className="text-sm text-gray-600">{resource.contact}</p>
+                              </div>
+                              <span className={`text-xs px-2 py-1 rounded-full ${
+                                resource.type === 'crisis' ? 'bg-red-100 text-red-800' :
+                                resource.type === 'counseling' ? 'bg-blue-100 text-blue-800' :
+                                'bg-green-100 text-green-800'
+                              }`}>
+                                {resource.type}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {post.type === 'interactive' && (
+                        <div className="mb-4 bg-white bg-opacity-70 rounded-lg p-3">
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="text-sm font-medium">Challenge Progress</span>
+                            <span className="text-sm text-gray-600">{post.participants} participants</span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-3">
+                            <div 
+                              className="bg-gradient-to-r from-yellow-400 to-orange-500 h-3 rounded-full transition-all duration-500"
+                              style={{ width: `${post.challengeProgress}%` }}
+                            ></div>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-1">{post.challengeProgress}% complete</p>
+                        </div>
+                      )}
+
+                      {/* Enhanced Action Buttons - Twitter Style */}
+                      <div className="flex items-center justify-between pt-3 border-t border-white border-opacity-50">
+                        <div className="flex items-center space-x-1">
+                          {/* Like Button */}
+                          <button 
+                            onClick={() => handleMentalHealthLike(post.id)}
+                            className={`flex items-center space-x-1 px-3 py-2 rounded-full transition-all hover:bg-red-50 ${
+                              likedMentalHealthPosts.has(post.id) 
+                                ? 'text-red-600' 
+                                : 'text-gray-600 hover:text-red-600'
+                            }`}
+                          >
+                            <Heart className={`w-4 h-4 ${likedMentalHealthPosts.has(post.id) ? 'fill-current' : ''}`} />
+                            <span className="text-sm font-medium">{post.likes}</span>
+                          </button>
+                          
+                          {/* Comment Button */}
+                          {post.comments && (
+                            <button className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all">
+                              <MessageCircle className="w-4 h-4" />
+                              <span className="text-sm">{post.comments}</span>
+                            </button>
+                          )}
+                          
+                          {/* Retweet Button */}
+                          {post.retweets && (
+                            <button 
+                              onClick={() => handleRetweet(post.id)}
+                              className={`flex items-center space-x-1 px-3 py-2 rounded-full transition-all hover:bg-green-50 ${
+                                retweetedPosts.has(post.id) 
+                                  ? 'text-green-600' 
+                                  : 'text-gray-600 hover:text-green-600'
+                              }`}
+                            >
+                              <Reply className="w-4 h-4" />
+                              <span className="text-sm">{post.retweets}</span>
+                            </button>
+                          )}
+                          
+                          {/* Special Action Buttons */}
+                          {post.actionButton && (
+                            <button 
+                              onClick={handleBreathingExercise}
+                              className="px-3 py-2 bg-teal-100 hover:bg-teal-200 text-teal-700 font-medium rounded-full transition-all text-sm"
+                            >
+                              {post.actionButton}
+                            </button>
+                          )}
+                          
+                          {post.type === 'live_session' && (
+                            <button 
+                              onClick={() => handleLiveJoin(post.id)}
+                              className="px-3 py-2 bg-red-100 hover:bg-red-200 text-red-700 font-medium rounded-full transition-all text-sm animate-pulse"
+                            >
+                              Join Live
+                            </button>
+                          )}
+                          
+                          {post.type === 'video' && (
+                            <button 
+                              onClick={() => handleVideoPlay(post.id)}
+                              className="px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-full transition-all text-sm"
+                            >
+                              ▶️ Play Video
+                            </button>
+                          )}
+                          
+                          {post.type === 'challenge' && (
+                            <button 
+                              onClick={() => handleJoinChallenge(post.id)}
+                              className="px-3 py-2 bg-violet-100 hover:bg-violet-200 text-violet-700 font-medium rounded-full transition-all text-sm"
+                            >
+                              Join Challenge
+                            </button>
+                          )}
+                        </div>
+                        
+                        {/* Share Button */}
+                        <button className="text-gray-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-2 rounded-full transition-all">
+                          <Share2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Load More Button */}
+                <div className="text-center pt-6">
+                  <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-md hover:shadow-lg">
+                    Load More Wellness Content
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -818,7 +1520,7 @@ const CommunityPage = () => {
             <input
               type="text"
               value={newPostTitle}
-              onChange={(e) => setNewPostTitle(e.target.value)}
+              onChange={(e) => setNewPostTitle(prevTitle => e.target.value)}
               placeholder="Enter post title..."
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#585182]"
             />
@@ -828,7 +1530,7 @@ const CommunityPage = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
             <select
               value={newPostCategory}
-              onChange={(e) => setNewPostCategory(e.target.value)}
+              onChange={(e) => setNewPostCategory(prevCategory => e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#585182]"
             >
               {categories.filter(cat => cat !== 'all').map(category => (
@@ -841,7 +1543,7 @@ const CommunityPage = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">Content</label>
             <textarea
               value={newPostContent}
-              onChange={(e) => setNewPostContent(e.target.value)}
+              onChange={(e) => setNewPostContent(prevContent => e.target.value)}
               placeholder="Write your post content..."
               rows="6"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#585182] resize-none"
@@ -853,7 +1555,7 @@ const CommunityPage = () => {
             <input
               type="text"
               value={newPostTags}
-              onChange={(e) => setNewPostTags(e.target.value)}
+              onChange={(e) => setNewPostTags(prevTags => e.target.value)}
               placeholder="react, javascript, tutorial"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#585182]"
             />
@@ -956,7 +1658,7 @@ const CommunityPage = () => {
   // Mobile Bottom Navigation
   const MobileNavigation = () => (
     <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-      <div className="grid grid-cols-3 h-16">
+      <div className="grid grid-cols-4 h-16">
         <button 
           onClick={() => {
             setCurrentPage('community');
@@ -980,6 +1682,18 @@ const CommunityPage = () => {
         >
           <Award className="w-5 h-5" />
           <span className="text-xs">Mentors</span>
+        </button>
+        <button 
+          onClick={() => {
+            setCurrentPage('community');
+            setActiveTab('mental-health');
+          }}
+          className={`flex flex-col items-center justify-center space-y-1 ${
+            currentPage === 'community' && activeTab === 'mental-health' ? 'text-[#585182]' : 'text-gray-600'
+          }`}
+        >
+          <Heart className="w-4 h-4" />
+          <span className="text-xs">Wellness</span>
         </button>
         <button 
           onClick={() => setCurrentPage('chat')}

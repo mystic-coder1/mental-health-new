@@ -1,9 +1,30 @@
 import React from 'react';
-import { Heart, User, GraduationCap, Shield, Users, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Heart, User, GraduationCap, Shield, Users, Sparkles, ArrowLeft } from 'lucide-react';
 
 function App() {
+  const navigate = useNavigate();
+
+  const handleDoctorLogin = () => {
+    navigate('/doctor-login');
+  };
+
+  const handleStudentLogin = () => {
+    navigate('/student-login');
+  };
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
+      {/* Back Button */}
+      <div className="absolute top-6 left-6 z-10">
+        <button
+          onClick={() => window.history.back()}
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md hover:shadow-lg transition-all duration-200 hover:bg-gray-50 border border-gray-200"
+        >
+          <ArrowLeft className="w-5 h-5 text-gray-600" />
+        </button>
+      </div>
+      
       {/* Header */}
       <header className="w-full px-6 py-8">
         <div className="max-w-6xl mx-auto">
@@ -40,6 +61,7 @@ function App() {
             {/* Doctor Option */}
             <div className="group">
               <button 
+                onClick={handleDoctorLogin}
                 className="w-full p-8 rounded-3xl border-2 border-gray-100 hover:border-purple-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white"
                 style={{ backgroundColor: 'white' }}
               >
@@ -71,6 +93,7 @@ function App() {
             {/* Student Option */}
             <div className="group">
               <button 
+                onClick={handleStudentLogin}
                 className="w-full p-8 rounded-3xl border-2 border-gray-100 hover:border-purple-200 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white"
                 style={{ backgroundColor: 'white' }}
               >
