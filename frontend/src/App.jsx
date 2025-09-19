@@ -10,6 +10,7 @@ import DocDash from './assets/doc-dashboard';
 import Community from './assets/communitypage';
 import Category from './assets/category';
 import Homepage from './assets/homepage';
+import Counsellor from './assets/counsellor';
 import { Home } from 'lucide-react';
 
 
@@ -27,6 +28,7 @@ function App() {
       <Route path="/doc-dashboard" element={<DocDash />} />
       <Route path="/community" element={<Community />} />
       <Route path="/category" element={<Category />} />
+      <Route path="/counsellor" element={<Counsellor />} />
     
       <Route path="*" element={<Navigate to="/student-login" replace />} />
     </Routes>

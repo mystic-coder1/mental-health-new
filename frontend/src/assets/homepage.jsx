@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Heart, Video, Users, Smartphone, Menu, X, Shield, Clock, Star, ChevronRight, Play, MessageCircle, Calendar, Quote } from 'lucide-react';
 
 function App() {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
@@ -130,6 +132,7 @@ function App() {
           {/* CTA Button */}
           <div className="flex justify-center">
             <button 
+              onClick={() => navigate('/counsellor')}
               className="flex items-center px-8 py-4 rounded-full text-white font-semibold text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1 space-x-3"
               style={{ backgroundColor: '#585182' }}
             >
