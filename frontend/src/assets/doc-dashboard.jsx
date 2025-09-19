@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bell, Calendar, Users, FileText, MessageSquare, Check, X, Eye, Clock, AlertTriangle } from 'lucide-react';
+import { Bell, Calendar, Users, FileText, MessageSquare, Check, X, Eye, Clock, AlertTriangle, ArrowLeft } from 'lucide-react';
 
 const DoctorDashboard = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -201,6 +201,15 @@ const DoctorDashboard = () => {
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="px-4 sm:px-6 lg:px-8 py-4">
+          {/* Back Button */}
+          <button 
+            onClick={() => window.history.back()}
+            className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 mb-4 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">Back</span>
+          </button>
+          
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-3 sm:space-y-0">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Mental Health Dashboard</h1>
