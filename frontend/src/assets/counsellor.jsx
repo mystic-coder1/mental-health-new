@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Filter, Star, Clock, User, Phone, Mail } from 'lucide-react';
 
 const DoctorFinder = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSpecialty, setSelectedSpecialty] = useState('');
 
@@ -218,12 +220,16 @@ const DoctorFinder = () => {
               {/* Action Buttons */}
               <div className="p-6 pt-0 flex gap-3">
                 <button 
+                  onClick={() => navigate('/appointment-booking', { state: { doctor } })}
                   className="flex-1 py-2 px-4 rounded-lg font-medium text-white transition-colors duration-200 hover:opacity-90"
                   style={{ backgroundColor: '#585182' }}
                 >
                   Book Appointment
                 </button>
-                <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200">
+                <button 
+                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200"
+                  title="View Profile"
+                >
                   <User className="w-4 h-4" />
                 </button>
               </div>
