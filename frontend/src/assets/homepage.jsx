@@ -28,7 +28,7 @@ function App() {
                 <Heart className="w-6 h-6 text-white" />
               </div>
               <h1 className="text-2xl font-bold" style={{ color: '#585182' }}>
-                YR Buddy
+                Your Buddy
               </h1>
             </div>
 
@@ -118,7 +118,7 @@ function App() {
                 "Your mental health is a priority. Your happiness is essential. Your self-care is a necessity."
               </p>
               <div className="text-right">
-                <span className="text-sm text-purple-600 font-medium">— YR Buddy Community</span>
+                <span className="text-sm text-purple-600 font-medium">— Your Buddy Community</span>
               </div>
             </div>
           </div>

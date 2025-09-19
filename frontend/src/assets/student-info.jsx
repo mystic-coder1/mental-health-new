@@ -149,9 +149,9 @@ const StudentRegistrationPage = () => {
     if (validateStep(5)) {
       console.log('Registration data:', formData);
       alert('Account created successfully! Please check your email for verification.');
-      // Navigate to student login page after successful registration
+      // Navigate to category page after successful registration
       setTimeout(() => {
-        navigate('/student-login');
+        navigate('/category');
       }, 1000); // Small delay to let the alert be seen
       return true;
     }
@@ -785,7 +785,7 @@ const StudentRegistrationPage = () => {
                 </button>
               ) : (
                 <Link
-                  to="/student-login"
+                  to="/category"
                   onClick={(e) => {
                     e.preventDefault();
                     handleSubmit();
