@@ -314,11 +314,22 @@ User message: ${message}`
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-2">
               <button 
+<<<<<<< HEAD
                 onClick={() => navigate('/video')}
+=======
+                onClick={() => navigate('/counsellor')}
+>>>>>>> bda736670920e87d5b80452a4a9958367d92c9ab
                 className="px-6 py-2 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
                 style={{ backgroundColor: '#585182' }}
               >
-                Video Sessions
+                Find Doctors
+              </button>
+              <button 
+                onClick={() => navigate('/appointment-management')}
+                className="px-6 py-2 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
+                style={{ backgroundColor: '#585182' }}
+              >
+                My Appointments
               </button>
               <button 
                 className="px-6 py-2 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
@@ -331,7 +342,7 @@ User message: ${message}`
                 className="px-6 py-2 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
                 style={{ backgroundColor: '#585182' }}
               >
-                AR Therapy Experiences
+                Wellness Activities
               </button>
             </div>
 
@@ -350,11 +361,22 @@ User message: ${message}`
             <div className="md:hidden mt-4 py-4 border-t border-gray-100">
               <div className="flex flex-col space-y-3">
                 <button 
+<<<<<<< HEAD
                   onClick={() => navigate('/video')}
+=======
+                  onClick={() => navigate('/counsellor')}
+>>>>>>> bda736670920e87d5b80452a4a9958367d92c9ab
                   className="w-full px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
                   style={{ backgroundColor: '#585182' }}
                 >
-                  Video Sessions
+                  Find Doctors
+                </button>
+                <button 
+                  onClick={() => navigate('/appointment-management')}
+                  className="w-full px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
+                  style={{ backgroundColor: '#585182' }}
+                >
+                  My Appointments
                 </button>
                 <button 
                   className="w-full px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
@@ -367,7 +389,7 @@ User message: ${message}`
                   className="w-full px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity duration-200"
                   style={{ backgroundColor: '#585182' }}
                 >
-                  AR Therapy Experiences
+                  Wellness Activities
                 </button>
               </div>
             </div>
