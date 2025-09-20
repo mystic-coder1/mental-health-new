@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-
 import BeforeLog from './assets/beforelogin';
 import StudentLogin from './assets/studentlogin';
 import StudentInfo from './assets/student-info';
@@ -16,10 +15,8 @@ import Video from './assets/videosession';
 import Appointmentbook from './assets/appointment-booking';
 import Meet from './assets/meet';
 import AppointmentManage from './assets/appointment-management';
+import OTPVerification from './assets/OTPVerification';
 import { Home } from 'lucide-react';
-
-
-
 
 function App() {
   return (
@@ -39,6 +36,7 @@ function App() {
       <Route path="/book-appointment" element={<Appointmentbook />} />
       <Route path="/meet" element={<Meet />} />
       <Route path="/manage-appoint" element={<AppointmentManage />} />
+      <Route path="/otp-verification" element={<OTPVerification />} />
     
       <Route path="*" element={<Navigate to="/student-login" replace />} />
     </Routes>
