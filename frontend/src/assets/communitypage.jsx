@@ -64,8 +64,8 @@ const CommunityPage = () => {
   const [posts, setPosts] = useState([
     {
       id: 1,
-      title: "How to prepare for React interviews?",
-      content: "I'm struggling with React concepts for interviews. Any tips from experienced developers?",
+      title: "I feel anxious before exams. How can I calm myself quickly?",
+      content: "Recently I am going through a tough phase of my  life.......",
       author: generateUniqueId("alex_student"),
       authorType: "student",
       category: "Career",
@@ -74,15 +74,15 @@ const CommunityPage = () => {
         {
           id: 101,
           content: "Focus on hooks, state management, and component lifecycle. Practice coding challenges daily!",
-          author: generateUniqueId("sarah_mentor"),
-          authorType: "mentor",
+          author: generateUniqueId("sarah_advisor"),
+          authorType: "advisor",
           timestamp: "1 hour ago",
           likes: 12,
           replies: []
         }
       ],
       timestamp: "2 hours ago",
-      tags: ["react", "interview", "career"],
+      tags: ["mental health", "guidance", "anxiety"],
       solved: false,
       likes: 15
     }
@@ -475,12 +475,12 @@ const CommunityPage = () => {
 
   const [likedMentalHealthPosts, setLikedMentalHealthPosts] = useState(new Set());
 
-  const [mentors] = useState([
+  const [advisors] = useState([
     {
       id: 1,
-      name: "Mentor",
-      username: generateUniqueId("sarah_mentor"),
-      expertise: "Full Stack Development",
+      name: "Advisor",
+      username: generateUniqueId("sarah_advisor"),
+      expertise: "Phsy",
       rating: 4.9,
       experience: "5+ years",
       avatar: "SC",
@@ -489,9 +489,9 @@ const CommunityPage = () => {
     },
     {
       id: 2,
-      name: "Mentor",
-      username: generateUniqueId("david_mentor"),
-      expertise: "Machine Learning",
+      name: "Advisor",
+      username: generateUniqueId("david_advisor"),
+      expertise: "Psychatarist",
       rating: 4.8,
       experience: "7+ years",
       avatar: "DK",
@@ -967,11 +967,11 @@ const CommunityPage = () => {
         <div className="flex-1">
           <div className="flex items-center space-x-2 mb-2">
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-              post.authorType === 'mentor' 
+              post.authorType === 'advisor' 
                 ? 'bg-purple-100 text-[#585182]' 
                 : 'bg-blue-100 text-[#585182]'
             }`}>
-              {post.authorType === 'mentor' ? <Award className="w-3 h-3 inline mr-1" /> : <User className="w-3 h-3 inline mr-1" />}
+              {post.authorType === 'advisor' ? <Award className="w-3 h-3 inline mr-1" /> : <User className="w-3 h-3 inline mr-1" />}
               {post.author}
             </span>
             <span className="text-gray-500 text-sm">{post.timestamp}</span>
@@ -1086,15 +1086,15 @@ const CommunityPage = () => {
                   <span>Discussions</span>
                 </button>
                 <button 
-                  onClick={() => setActiveTab('mentors')}
+                  onClick={() => setActiveTab('advisors')}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    activeTab === 'mentors' 
+                    activeTab === 'advisors' 
                       ? 'bg-[#585182] bg-opacity-10 text-[#585182]' 
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   <Award className="w-4 h-4" />
-                  <span>Mentors</span>
+                  <span>Advisors</span>
                 </button>
                 <button 
                   onClick={() => setActiveTab('mental-health')}
@@ -1160,41 +1160,41 @@ const CommunityPage = () => {
               </>
             )}
 
-            {activeTab === 'mentors' && (
+            {activeTab === 'advisors' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {mentors.map(mentor => (
-                  <div key={mentor.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                {advisors.map(advisor => (
+                  <div key={advisor.id} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
                     <div className="flex items-start space-x-4">
                       <div className="relative">
                         <div className="w-16 h-16 bg-gradient-to-br from-[#585182] to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-                          {mentor.avatar}
+                          {advisor.avatar}
                         </div>
-                        {mentor.online && (
+                        {advisor.online && (
                           <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-white"></div>
                         )}
                       </div>
                       
                       <div className="flex-1">
-                        <h3 className="text-lg font-semibold text-gray-900">{mentor.name}</h3>
-                        <p className="text-[#585182] font-medium">{mentor.expertise}</p>
-                        <p className="text-gray-500 text-xs mb-2">ID: {mentor.username}</p>
+                        <h3 className="text-lg font-semibold text-gray-900">{advisor.name}</h3>
+                        <p className="text-[#585182] font-medium">{advisor.expertise}</p>
+                        <p className="text-gray-500 text-xs mb-2">ID: {advisor.username}</p>
                         
                         <div className="flex space-x-2">
                           <button 
                             onClick={() => {
-                              const existingConv = conversations.find(conv => conv.username === mentor.username);
+                              const existingConv = conversations.find(conv => conv.username === advisor.username);
                               if (existingConv) {
                                 setActiveChat(existingConv);
                               } else {
                                 const newConv = {
                                   id: Date.now(),
-                                  user: mentor.name,
-                                  username: mentor.username,
+                                  user: advisor.name,
+                                  username: advisor.username,
                                   lastMessage: "",
                                   timestamp: "now",
                                   unread: 0,
-                                  avatar: mentor.avatar,
-                                  online: mentor.online,
+                                  avatar: advisor.avatar,
+                                  online: advisor.online,
                                   messages: []
                                 };
                                 setConversations(prevConversations => [newConv, ...prevConversations]);
@@ -1444,42 +1444,42 @@ const CommunityPage = () => {
                   <span className="font-semibold">1,247</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Active Mentors</span>
+                  <span className="text-gray-600">Active Advisors</span>
                   <span className="font-semibold">24</span>
                 </div>
               </div>
             </div>
 
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Online Mentors</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Online Advisors</h3>
               <div className="space-y-3">
-                {mentors.filter(mentor => mentor.online).map(mentor => (
-                  <div key={mentor.id} className="flex items-center space-x-3">
+                {advisors.filter(advisor => advisor.online).map(advisor => (
+                  <div key={advisor.id} className="flex items-center space-x-3">
                     <div className="relative">
                       <div className="w-8 h-8 bg-gradient-to-br from-[#585182] to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                        {mentor.avatar}
+                        {advisor.avatar}
                       </div>
                       <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border border-white"></div>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">{mentor.name}</p>
-                      <p className="text-xs text-gray-500 truncate">{mentor.expertise}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">{advisor.name}</p>
+                      <p className="text-xs text-gray-500 truncate">{advisor.expertise}</p>
                     </div>
                     <button 
                       onClick={() => {
-                        const existingConv = conversations.find(conv => conv.username === mentor.username);
+                        const existingConv = conversations.find(conv => conv.username === advisor.username);
                         if (existingConv) {
                           setActiveChat(existingConv);
                         } else {
                           const newConv = {
                             id: Date.now(),
-                            user: mentor.name,
-                            username: mentor.username,
+                            user: advisor.name,
+                            username: advisor.username,
                             lastMessage: "",
                             timestamp: "now",
                             unread: 0,
-                            avatar: mentor.avatar,
-                            online: mentor.online,
+                            avatar: advisor.avatar,
+                            online: advisor.online,
                             messages: []
                           };
                           setConversations(prevConversations => [newConv, ...prevConversations]);
@@ -1604,24 +1604,24 @@ const CommunityPage = () => {
           </div>
           
           <div className="space-y-2 max-h-60 overflow-y-auto">
-            <h4 className="text-sm font-medium text-gray-900 mb-2">Available Mentors</h4>
-            {mentors.map(mentor => (
+            <h4 className="text-sm font-medium text-gray-900 mb-2">Available Advisors</h4>
+            {advisors.map(advisor => (
               <button
-                key={mentor.id}
+                key={advisor.id}
                 onClick={() => {
-                  const existingConv = conversations.find(conv => conv.username === mentor.username);
+                  const existingConv = conversations.find(conv => conv.username === advisor.username);
                   if (existingConv) {
                     setActiveChat(existingConv);
                   } else {
                     const newConv = {
                       id: Date.now(),
-                      user: mentor.name,
-                      username: mentor.username,
+                      user: advisor.name,
+                      username: advisor.username,
                       lastMessage: "",
                       timestamp: "now",
                       unread: 0,
-                      avatar: mentor.avatar,
-                      online: mentor.online,
+                      avatar: advisor.avatar,
+                      online: advisor.online,
                       messages: []
                     };
                     setConversations(prevConversations => [newConv, ...prevConversations]);

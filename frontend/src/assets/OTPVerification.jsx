@@ -139,7 +139,7 @@ function OTPVerification() {
   // Handle successful verification
   const handleContinue = () => {
     if (userType === 'student') {
-      navigate('/homepage');
+      navigate('/category');
     } else if (userType === 'doctor') {
       navigate('/doc-dashboard');
     } else {
